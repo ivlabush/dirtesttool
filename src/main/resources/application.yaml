@@ -1,1 +1,11 @@
+test.config:
+  # wordlists location should be in resource folder
+  wordlists: wordlist1.txt, wordlist2.txt
+  # configurable status codes which should be treated as successful
+  success.status.codes: 200, 301
+  stop:
+    # status codes that should stop processing after number of retries
+    status.codes: 500, 501, 502, 503, 504, 505
+    # number of retries for stop status codes
+    retries: 3
 
