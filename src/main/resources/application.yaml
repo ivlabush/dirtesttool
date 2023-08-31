@@ -8,4 +8,5 @@ test.config:
     status.codes: 500, 501, 502, 503, 504, 505
     # number of retries for stop status codes
     retries: 3
-
+  # number of threads used for testing
+  parallel.threads: 10
