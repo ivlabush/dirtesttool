@@ -11,7 +11,7 @@ public interface TaskService {
 
     TaskEntity getTaskById(int id);
 
-    TaskEntity createTask();
+    TaskEntity createTask(TaskDto task);
 
     TaskEntity updateTask(TaskDto task);
 

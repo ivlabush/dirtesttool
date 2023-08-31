@@ -31,8 +31,8 @@ public class TaskServiceImpl implements TaskService {
     }
 
     @Override
-    public TaskEntity createTask() {
-        return repository.save(new TaskEntity());
+    public TaskEntity createTask(TaskDto task) {
+        return repository.save(mapper.map(task, TaskEntity.class));
     }
 
     @Override

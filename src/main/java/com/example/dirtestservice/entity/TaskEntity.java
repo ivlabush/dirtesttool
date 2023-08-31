@@ -14,4 +14,5 @@ public class TaskEntity {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
     private String name = "task-" + id;
+    private String baseUrl;
 }
