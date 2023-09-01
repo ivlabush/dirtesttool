@@ -42,7 +42,7 @@ public class TaskController {
     @PostMapping
     @ResponseStatus(HttpStatus.ACCEPTED)
     @ResponseBody
-    public TaskDto createTask(@Valid TaskDto task) {
+    public TaskDto createTask(@RequestBody @Valid TaskDto task) {
         return mapper.map(service.createTask(task), TaskDto.class);
     }
 
