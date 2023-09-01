@@ -1,0 +1,3 @@
+databaseChangeLog:
+  - include:
+      file: migration/V1_0_0__initial_schema.sql

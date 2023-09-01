@@ -24,7 +24,7 @@ public class TaskController {
 
     private static final Type type = new TypeToken<List<TaskDto>>() {}.getType();
 
-    @GetMapping
+    @GetMapping("/all")
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
     public List<TaskDto> getAllTasks() {

@@ -1,0 +1,17 @@
+version: '1.0'
+networks:
+  tools:
+    name: tools
+    driver: bridge
+services:
+  postgresql:
+    container_name: postgre
+    image: postgres:15
+    ports:
+      - 5432:5432
+    environment:
+      - POSTGRES_USER=root
+      - POSTGRES_PASSWORD=toor
+      - POSTGRES_DB=tools
+    networks:
+      - tools

@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor(onConstructor = @__(@Autowired))
@@ -32,6 +33,9 @@ public class TaskServiceImpl implements TaskService {
 
     @Override
     public TaskEntity createTask(TaskDto task) {
+        String id = UUID.randomUUID().toString();
+        task.setId(id);
+        task.setName("task-" + id);
         return repository.save(mapper.map(task, TaskEntity.class));
     }
 
