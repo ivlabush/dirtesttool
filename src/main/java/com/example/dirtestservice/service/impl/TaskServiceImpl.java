@@ -42,8 +42,10 @@ public class TaskServiceImpl implements TaskService {
     }
 
     @Override
-    public TaskEntity updateTask(TaskDto task) {
-        return repository.save(mapper.map(task, TaskEntity.class));
+    public TaskEntity updateTask(String id, TaskDto task) {
+        TaskEntity entity = getTaskById(id);
+        entity.setBaseUrl(task.getBaseUrl());
+        return repository.save(entity);
     }
 
     @Override

@@ -1,26 +1,43 @@
 package com.example.dirtestservice.controller;
 
 import com.example.dirtestservice.dto.ErrorDto;
+import com.example.dirtestservice.exceptions.TaskNotFoundException;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 @ControllerAdvice
 public class ErrorHandler {
 
-    @ExceptionHandler(value = EntityNotFoundException.class)
+    @ExceptionHandler(value = TaskNotFoundException.class)
     @ResponseBody
     @ResponseStatus(HttpStatus.NOT_FOUND)
-    public ErrorDto handleEntityNotFoundException(EntityNotFoundException e) {
+    public ErrorDto handleTaskNotFoundException(TaskNotFoundException e) {
         return ErrorDto.builder()
                 .message(e.getMessage())
                 .date(new Date())
                 .build();
+    }
+
+    @ExceptionHandler(value = MethodArgumentNotValidException.class)
+    @ResponseBody
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public List<ErrorDto> handleMethodArgumentNotValidException(MethodArgumentNotValidException e) {
+        List<ErrorDto> errorsDto = new ArrayList<>();
+        Date date = new Date();
+        e.getAllErrors().forEach(er -> errorsDto.add(ErrorDto.builder()
+                .message(er.getDefaultMessage())
+                .date(date)
+                .build()));
+        return errorsDto;
     }
 
     @ExceptionHandler(value = Exception.class)

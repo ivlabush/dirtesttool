@@ -13,7 +13,7 @@ public interface TaskService {
 
     TaskEntity createTask(TaskDto task);
 
-    TaskEntity updateTask(TaskDto task);
+    TaskEntity updateTask(String id, TaskDto task);
 
     TaskEntity deleteTask(String id);
 

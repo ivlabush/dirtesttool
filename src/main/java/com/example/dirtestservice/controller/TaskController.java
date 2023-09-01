@@ -3,6 +3,7 @@ package com.example.dirtestservice.controller;
 import com.example.dirtestservice.dto.TaskDto;
 import com.example.dirtestservice.service.TaskService;
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotBlank;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeToken;
@@ -27,36 +28,32 @@ public class TaskController {
 
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
-    @ResponseBody
     public List<TaskDto> getAllTasks() {
         return mapper.map(service.getAllTasks(), type);
     }
 
     @GetMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
-    @ResponseBody
-    public TaskDto getTaskById(@PathVariable String id) {
+    public TaskDto getTaskById(@PathVariable @NotBlank String id) {
         return mapper.map(service.getTaskById(id), TaskDto.class);
     }
 
     @PostMapping
     @ResponseStatus(HttpStatus.ACCEPTED)
-    @ResponseBody
     public TaskDto createTask(@RequestBody @Valid TaskDto task) {
         return mapper.map(service.createTask(task), TaskDto.class);
     }
 
-    @PutMapping
+    @PutMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
-    @ResponseBody
-    public TaskDto updateTask(@RequestBody @Valid TaskDto taskDto) {
-        return mapper.map(service.updateTask(taskDto), TaskDto.class);
+    public TaskDto updateTask(@PathVariable @NotBlank String id,
+                              @RequestBody @Valid TaskDto taskDto) {
+        return mapper.map(service.updateTask(id, taskDto), TaskDto.class);
     }
 
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
-    @ResponseBody
-    public TaskDto deleteTask(@PathVariable String id) {
+    public TaskDto deleteTask(@PathVariable @NotBlank String id) {
         return mapper.map(service.deleteTask(id), TaskDto.class);
     }
 }
