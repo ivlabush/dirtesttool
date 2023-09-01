@@ -20,6 +20,8 @@ public class TaskServiceImpl implements TaskService {
     private final TaskRepository repository;
     private final ModelMapper mapper;
 
+    private static final String TASK_NAME_PREFIX = "task-";
+
     @Override
     public List<TaskEntity> getAllTasks() {
         return repository.findAll();
@@ -35,7 +37,7 @@ public class TaskServiceImpl implements TaskService {
     public TaskEntity createTask(TaskDto task) {
         String id = UUID.randomUUID().toString();
         task.setId(id);
-        task.setName("task-" + id);
+        task.setName(TASK_NAME_PREFIX + id);
         return repository.save(mapper.map(task, TaskEntity.class));
     }
 
