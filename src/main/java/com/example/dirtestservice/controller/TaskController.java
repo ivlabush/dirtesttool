@@ -14,7 +14,8 @@ import org.springframework.web.bind.annotation.*;
 import java.lang.reflect.Type;
 import java.util.List;
 
-@RestController("/tasks")
+@RestController
+@RequestMapping("/tasks")
 @Validated
 @RequiredArgsConstructor(onConstructor = @__(@Autowired))
 public class TaskController {
@@ -24,7 +25,7 @@ public class TaskController {
 
     private static final Type type = new TypeToken<List<TaskDto>>() {}.getType();
 
-    @GetMapping("/all")
+    @GetMapping
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
     public List<TaskDto> getAllTasks() {
@@ -34,7 +35,7 @@ public class TaskController {
     @GetMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
-    public TaskDto getTaskById(@PathVariable int id) {
+    public TaskDto getTaskById(@PathVariable String id) {
         return mapper.map(service.getTaskById(id), TaskDto.class);
     }
 
@@ -55,7 +56,7 @@ public class TaskController {
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
-    public TaskDto deleteTask(@PathVariable int id) {
+    public TaskDto deleteTask(@PathVariable String id) {
         return mapper.map(service.deleteTask(id), TaskDto.class);
     }
 }

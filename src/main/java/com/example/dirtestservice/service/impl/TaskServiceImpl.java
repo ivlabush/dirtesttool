@@ -26,7 +26,7 @@ public class TaskServiceImpl implements TaskService {
     }
 
     @Override
-    public TaskEntity getTaskById(int id) {
+    public TaskEntity getTaskById(String id) {
         return repository.findById(id)
                 .orElseThrow(() -> new TaskNotFoundException("Task with id=" + id + " wasn't found"));
     }
@@ -45,7 +45,7 @@ public class TaskServiceImpl implements TaskService {
     }
 
     @Override
-    public TaskEntity deleteTask(int id) {
+    public TaskEntity deleteTask(String id) {
         TaskEntity entity = getTaskById(id);
         repository.deleteById(id);
         return entity;

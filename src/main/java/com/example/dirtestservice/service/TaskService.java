@@ -9,12 +9,12 @@ public interface TaskService {
 
     List<TaskEntity> getAllTasks();
 
-    TaskEntity getTaskById(int id);
+    TaskEntity getTaskById(String id);
 
     TaskEntity createTask(TaskDto task);
 
     TaskEntity updateTask(TaskDto task);
 
-    TaskEntity deleteTask(int id);
+    TaskEntity deleteTask(String id);
 
 }
