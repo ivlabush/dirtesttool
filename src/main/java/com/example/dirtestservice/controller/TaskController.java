@@ -1,6 +1,7 @@
 package com.example.dirtestservice.controller;
 
 import com.example.dirtestservice.dto.TaskDto;
+import com.example.dirtestservice.service.TaskExecutionService;
 import com.example.dirtestservice.service.TaskService;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
@@ -13,6 +14,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.lang.reflect.Type;
+import java.util.Date;
 import java.util.List;
 
 @RestController
@@ -23,6 +25,7 @@ public class TaskController {
 
     private final TaskService service;
     private final ModelMapper mapper;
+    private final TaskExecutionService executionService;
 
     private static final Type type = new TypeToken<List<TaskDto>>() {}.getType();
 
@@ -55,5 +58,11 @@ public class TaskController {
     @ResponseStatus(HttpStatus.OK)
     public TaskDto deleteTask(@PathVariable @NotBlank String id) {
         return mapper.map(service.deleteTask(id), TaskDto.class);
+    }
+
+    @PostMapping("/start/{id}")
+    @ResponseStatus(HttpStatus.ACCEPTED)
+    public String startTask(@PathVariable @NotBlank String id) {
+        return executionService.startTask(id);
     }
 }

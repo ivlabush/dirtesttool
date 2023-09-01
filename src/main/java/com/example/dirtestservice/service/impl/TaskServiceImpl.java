@@ -54,4 +54,9 @@ public class TaskServiceImpl implements TaskService {
         repository.deleteById(id);
         return entity;
     }
+
+    @Override
+    public void startTask(String id) {
+
+    }
 }

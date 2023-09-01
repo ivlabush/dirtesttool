@@ -17,4 +17,6 @@ public interface TaskService {
 
     TaskEntity deleteTask(String id);
 
+    void startTask(String id);
+
 }
