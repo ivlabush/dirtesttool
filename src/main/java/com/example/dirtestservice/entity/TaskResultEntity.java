@@ -1,8 +1,9 @@
 package com.example.dirtestservice.entity;
 
-import jakarta.persistence.*;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
 import lombok.Data;
-import org.springframework.http.HttpStatus;
 
 @Entity
 @Data
@@ -13,5 +14,5 @@ public class TaskResultEntity {
     private String id;
     private String url;
     private String taskId;
-    private HttpStatus status;
+    private Integer statusCode;
 }
