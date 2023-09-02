@@ -3,13 +3,16 @@
 Automation service for testing directories of Web Applications.
 
 ## Prerequisites
-1. Java 17+
+1. Java 17
 2. PostgreSQL 15
-3. Maven 3.8.1+
+3. Maven 3.8.1
 
 ## Migration
 1. Update conf/migration.conf file, change username and password for root user
 2. Run ```mvn clean flyway:migrate -Dflyway.configFiles=migration.conf``` on running PostgreSQL DB with existing public schema
+   
+## Run Service
+Run ```mvn spring-boot:run``` to run the service. Default service port is 8080
 
 ## REST APIs
 Service expose REST APIs to manipulate configuration and runtime of the task and obtain tasks results
