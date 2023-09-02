@@ -14,7 +14,6 @@ import org.javatuples.Pair;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ResourceLoader;
 import org.springframework.http.HttpMethod;
-import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
@@ -73,7 +72,7 @@ public class TaskExecutionServiceImpl implements TaskExecutionService {
                 String path = r.readLine();
                 CompletableFuture
                         .supplyAsync(() -> submitRequest(baseUrl + path), executor)
-                        .thenAcceptAsync(pair -> checkStatus(taskId, pair), executor);
+                        .thenAcceptAsync(pair -> createTaskResult(taskId, pair), executor);
             } catch (IOException e) {
                 throw new UnableToReadFileException("Unable to read file");
             }
@@ -84,15 +83,15 @@ public class TaskExecutionServiceImpl implements TaskExecutionService {
         return new Pair<>(url, template.exchange(url, HttpMethod.GET, null, Object.class));
     }
 
-    private void checkStatus(String taskId, Pair<String, ResponseEntity<Object>> pair) {
+    private void createTaskResult(String taskId, Pair<String, ResponseEntity<Object>> pair) {
         String url = pair.getValue0();
-        HttpStatusCode code = pair.getValue1().getStatusCode();
-        if (configuration.getCodes().contains(code.value())) {
+        int code = pair.getValue1().getStatusCode().value();
+        if (configuration.getCodes().contains(code)) {
             TaskResultEntity entity = new TaskResultEntity();
             entity.setId(UUID.randomUUID().toString());
             entity.setUrl(url);
             entity.setTaskId(taskId);
-            entity.setStatusCode(code.value());
+            entity.setStatusCode(code);
             resultRepository.save(entity);
         }
     }
