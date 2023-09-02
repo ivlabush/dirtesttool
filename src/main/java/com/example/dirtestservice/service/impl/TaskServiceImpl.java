@@ -58,7 +58,7 @@ public class TaskServiceImpl implements TaskService {
     }
 
     @Override
-    public String startTask(String id) {
-        return executionService.startTask(id);
+    public void startTask(String id) {
+        executionService.startTask(id);
     }
 }

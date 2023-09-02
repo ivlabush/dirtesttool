@@ -13,6 +13,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.lang.reflect.Type;
+import java.util.Date;
 import java.util.List;
 
 @RestController
@@ -61,6 +62,7 @@ public class TaskController {
     @PostMapping("/start/{id}")
     @ResponseStatus(HttpStatus.ACCEPTED)
     public String startTask(@PathVariable @NotBlank String id) {
-        return service.startTask(id);
+        service.startTask(id);
+        return "Execution of task " + id + " started at " + new Date();
     }
 }
