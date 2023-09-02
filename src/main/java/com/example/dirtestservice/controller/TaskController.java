@@ -14,7 +14,6 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.lang.reflect.Type;
-import java.util.Date;
 import java.util.List;
 
 @RestController
@@ -25,9 +24,9 @@ public class TaskController {
 
     private final TaskService service;
     private final ModelMapper mapper;
-    private final TaskExecutionService executionService;
 
-    private static final Type type = new TypeToken<List<TaskDto>>() {}.getType();
+    private static final Type type = new TypeToken<List<TaskDto>>() {
+    }.getType();
 
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
@@ -63,6 +62,6 @@ public class TaskController {
     @PostMapping("/start/{id}")
     @ResponseStatus(HttpStatus.ACCEPTED)
     public String startTask(@PathVariable @NotBlank String id) {
-        return executionService.startTask(id);
+        return service.startTask(id);
     }
 }

@@ -2,7 +2,7 @@ package com.example.dirtestservice.controller;
 
 import com.example.dirtestservice.dto.ErrorDto;
 import com.example.dirtestservice.exceptions.TaskNotFoundException;
-import jakarta.persistence.EntityNotFoundException;
+import com.example.dirtestservice.exceptions.TaskResultsNotFound;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -21,6 +21,16 @@ public class ErrorHandler {
     @ResponseBody
     @ResponseStatus(HttpStatus.NOT_FOUND)
     public ErrorDto handleTaskNotFoundException(TaskNotFoundException e) {
+        return ErrorDto.builder()
+                .message(e.getMessage())
+                .date(new Date())
+                .build();
+    }
+
+    @ExceptionHandler(value = TaskResultsNotFound.class)
+    @ResponseBody
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    public ErrorDto handleTaskResultsNotFoundException(TaskResultsNotFound e) {
         return ErrorDto.builder()
                 .message(e.getMessage())
                 .date(new Date())

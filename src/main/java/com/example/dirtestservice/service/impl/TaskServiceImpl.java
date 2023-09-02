@@ -4,6 +4,7 @@ import com.example.dirtestservice.dto.TaskDto;
 import com.example.dirtestservice.entity.TaskEntity;
 import com.example.dirtestservice.exceptions.TaskNotFoundException;
 import com.example.dirtestservice.repository.TaskRepository;
+import com.example.dirtestservice.service.TaskExecutionService;
 import com.example.dirtestservice.service.TaskService;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
@@ -17,6 +18,7 @@ import java.util.UUID;
 @RequiredArgsConstructor(onConstructor = @__(@Autowired))
 public class TaskServiceImpl implements TaskService {
 
+    private final TaskExecutionService executionService;
     private final TaskRepository repository;
     private final ModelMapper mapper;
 
@@ -56,7 +58,7 @@ public class TaskServiceImpl implements TaskService {
     }
 
     @Override
-    public void startTask(String id) {
-
+    public String startTask(String id) {
+        return executionService.startTask(id);
     }
 }

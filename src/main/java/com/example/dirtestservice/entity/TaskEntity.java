@@ -1,9 +1,10 @@
 package com.example.dirtestservice.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.Data;
+
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Data
@@ -14,4 +15,7 @@ public class TaskEntity {
     private String id;
     private String name;
     private String baseUrl;
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+    @JoinColumn(name = "taskId")
+    private Set<TaskResultEntity> taskResults = new HashSet<>();
 }
