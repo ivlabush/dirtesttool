@@ -15,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ResourceLoader;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
+import org.springframework.retry.support.RetryTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
@@ -37,7 +38,8 @@ public class TaskExecutionServiceImpl implements TaskExecutionService {
     private final TaskResultRepository resultRepository;
     private final RunConfiguration configuration;
     private final ResourceLoader loader;
-    private final RestTemplate template;
+    private final RetryTemplate retryTemplate;
+    private final RestTemplate restTemplate;
 
     @Override
     public void startTask(String id) {
@@ -80,7 +82,9 @@ public class TaskExecutionServiceImpl implements TaskExecutionService {
     }
 
     private Pair<String, ResponseEntity<Object>> submitRequest(String url) {
-        return new Pair<>(url, template.exchange(url, HttpMethod.GET, null, Object.class));
+        ResponseEntity<Object> response = retryTemplate.execute(args ->
+                restTemplate.exchange(url, HttpMethod.GET, null, Object.class));
+        return new Pair<>(url, response);
     }
 
     private void createTaskResult(String taskId, Pair<String, ResponseEntity<Object>> pair) {

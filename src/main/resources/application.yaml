@@ -6,7 +6,9 @@ run.config:
   stop:
     # status codes that should stop processing after number of retries
     codes: 500, 501, 502, 503, 504, 505
-    # number of retries for stop status codes
+    # constant backoff time in milliseconds between retries
+    backoff: 2000
+    # number of retries
     retries: 3
   # number of threads used for testing
   threads: 10
