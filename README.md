@@ -6,6 +6,7 @@ Automation service for testing directories of Web Applications.
 1. Java 17
 2. PostgreSQL 15
 3. Maven 3.8.1
+4. Docker 24.0.5
 
 ## Migration
 1. Update conf/migration.conf file, change username and password for root user
