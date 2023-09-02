@@ -12,7 +12,15 @@ public interface TaskResultService {
 
     TaskResultEntity getTaskResultById(String id);
 
-    void clearTaskResultsByTaskId(String id);
+    List<TaskResultEntity> getTaskResultsByUrl(String url);
 
-    void clearAllTAskResults();
+    List<TaskResultEntity> getTaskResultsByUrlContains(String url);
+
+    void deleteTaskResultsByTaskId(String id);
+
+    void deleteAllTaskResults();
+
+    void deleteAllTaskResultsByUrl(String url);
+
+    void deleteAllTaskResultsByUrlContains(String url);
 }

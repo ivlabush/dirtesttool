@@ -1,14 +1,18 @@
 package com.example.dirtestservice.dto;
 
-import lombok.Builder;
-import lombok.Getter;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import lombok.Data;
 
-import java.util.Date;
-
-@Builder
-@Getter
+@Data
+@JsonInclude(JsonInclude.Include.NON_NULL)
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class ErrorDto {
 
+    private String id;
+    private String url;
+    private String taskId;
+    private Integer statusCode;
     private String message;
-    private Date date;
+    private String stacktrace;
 }

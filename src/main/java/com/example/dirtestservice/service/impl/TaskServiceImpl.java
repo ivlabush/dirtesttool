@@ -36,6 +36,18 @@ public class TaskServiceImpl implements TaskService {
     }
 
     @Override
+    public List<TaskEntity> getTaskByUrl(String url) {
+        return repository.findAllByBaseUrl(url)
+                .orElseThrow(() -> new TaskNotFoundException("Tasks by url=" + url + " weren't found"));
+    }
+
+    @Override
+    public List<TaskEntity> getTasksByUrlContains(String url) {
+        return repository.findTasksByUrlContains(url)
+                .orElseThrow(() -> new TaskNotFoundException("Tasks containing url=" + url + " weren't found"));
+    }
+
+    @Override
     public TaskEntity createTask(TaskDto task) {
         String id = UUID.randomUUID().toString();
         task.setId(id);
@@ -51,10 +63,23 @@ public class TaskServiceImpl implements TaskService {
     }
 
     @Override
-    public TaskEntity deleteTask(String id) {
-        TaskEntity entity = getTaskById(id);
+    public void deleteAllTasks() {
+        repository.deleteAll();
+    }
+
+    @Override
+    public void deleteTask(String id) {
         repository.deleteById(id);
-        return entity;
+    }
+
+    @Override
+    public void deleteTaskByBaseUrl(String baseUrl) {
+        repository.deleteAllByBaseUrl(baseUrl);
+    }
+
+    @Override
+    public void deleteTaskByBaseUrlContains(String baseUrl) {
+        repository.deleteAllByBaseUrlContains(baseUrl);
     }
 
     @Override

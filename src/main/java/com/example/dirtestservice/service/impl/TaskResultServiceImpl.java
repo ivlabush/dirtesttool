@@ -1,8 +1,8 @@
 package com.example.dirtestservice.service.impl;
 
 import com.example.dirtestservice.entity.TaskResultEntity;
-import com.example.dirtestservice.repository.TaskResultRepository;
 import com.example.dirtestservice.exceptions.TaskResultsNotFoundException;
+import com.example.dirtestservice.repository.TaskResultRepository;
 import com.example.dirtestservice.service.TaskResultService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,12 +34,34 @@ public class TaskResultServiceImpl implements TaskResultService {
     }
 
     @Override
-    public void clearTaskResultsByTaskId(String id) {
+    public List<TaskResultEntity> getTaskResultsByUrl(String url) {
+        return repository.findAllByUrl(url)
+                .orElseThrow(() -> new TaskResultsNotFoundException("Task Results by url " + url + " weren't found"));
+    }
+
+    @Override
+    public List<TaskResultEntity> getTaskResultsByUrlContains(String url) {
+        return repository.findAllByUrlContains(url)
+                .orElseThrow(() -> new TaskResultsNotFoundException("Task Results by url " + url + " weren't found"));
+    }
+
+    @Override
+    public void deleteTaskResultsByTaskId(String id) {
         repository.deleteAllByTaskId(id);
     }
 
     @Override
-    public void clearAllTAskResults() {
+    public void deleteAllTaskResults() {
         repository.deleteAll();
+    }
+
+    @Override
+    public void deleteAllTaskResultsByUrl(String url) {
+        repository.deleteAllByUrl(url);
+    }
+
+    @Override
+    public void deleteAllTaskResultsByUrlContains(String url) {
+        repository.deleteAllByUrlContains(url);
     }
 }

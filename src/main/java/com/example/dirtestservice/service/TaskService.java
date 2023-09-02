@@ -11,11 +11,21 @@ public interface TaskService {
 
     TaskEntity getTaskById(String id);
 
+    List<TaskEntity> getTaskByUrl(String url);
+
+    List<TaskEntity> getTasksByUrlContains(String url);
+
     TaskEntity createTask(TaskDto task);
 
     TaskEntity updateTask(String id, TaskDto task);
 
-    TaskEntity deleteTask(String id);
+    void deleteAllTasks();
+
+    void deleteTask(String id);
+
+    void deleteTaskByBaseUrl(String baseUrl);
+
+    void deleteTaskByBaseUrlContains(String baseUrl);
 
     void startTask(String id);
 

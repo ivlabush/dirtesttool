@@ -40,6 +40,18 @@ public class TaskController {
         return mapper.map(service.getTaskById(id), TaskDto.class);
     }
 
+    @GetMapping("/url/{url}")
+    @ResponseStatus(HttpStatus.OK)
+    public List<TaskDto> getTasksByUrl(@PathVariable @NotBlank String url) {
+        return mapper.map(service.getTaskByUrl(url), type);
+    }
+
+    @GetMapping("/url/contains/{url}")
+    @ResponseStatus(HttpStatus.OK)
+    public List<TaskDto> getTasksByUrlContains(@PathVariable @NotBlank String url) {
+        return mapper.map(service.getTasksByUrlContains(url), type);
+    }
+
     @PostMapping
     @ResponseStatus(HttpStatus.ACCEPTED)
     public TaskDto createTask(@RequestBody @Valid TaskDto task) {
@@ -53,10 +65,28 @@ public class TaskController {
         return mapper.map(service.updateTask(id, taskDto), TaskDto.class);
     }
 
+    @DeleteMapping
+    @ResponseStatus(HttpStatus.OK)
+    public void deleteAllTasks() {
+        service.deleteAllTasks();
+    }
+
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public TaskDto deleteTask(@PathVariable @NotBlank String id) {
-        return mapper.map(service.deleteTask(id), TaskDto.class);
+    public void deleteTask(@PathVariable @NotBlank String id) {
+        service.deleteTask(id);
+    }
+
+    @DeleteMapping("/url/{url}")
+    @ResponseStatus(HttpStatus.OK)
+    public void deleteTaskByUrl(@PathVariable @NotBlank String url) {
+        service.deleteTaskByBaseUrl(url);
+    }
+
+    @DeleteMapping("/url//contains/{url}")
+    @ResponseStatus(HttpStatus.OK)
+    public void deleteTaskByUrlContains(@PathVariable @NotBlank String url) {
+        service.deleteTaskByBaseUrlContains(url);
     }
 
     @PostMapping("/start/{id}")

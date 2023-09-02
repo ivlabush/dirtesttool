@@ -18,4 +18,7 @@ public class TaskEntity {
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(name = "taskId")
     private Set<TaskResultEntity> taskResults = new HashSet<>();
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+    @JoinColumn(name = "taskId")
+    private Set<ErrorEntity> errors = new HashSet<>();
 }
