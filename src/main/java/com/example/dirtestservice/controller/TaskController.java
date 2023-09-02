@@ -83,7 +83,7 @@ public class TaskController {
         service.deleteTaskByBaseUrl(url);
     }
 
-    @DeleteMapping("/url//contains/{url}")
+    @DeleteMapping("/url/contains/{url}")
     @ResponseStatus(HttpStatus.OK)
     public void deleteTaskByUrlContains(@PathVariable @NotBlank String url) {
         service.deleteTaskByBaseUrlContains(url);
