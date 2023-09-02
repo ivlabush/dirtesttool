@@ -12,7 +12,7 @@ Automation service for testing directories of Web Applications.
 2. Run ```mvn clean flyway:migrate -Dflyway.configFiles=migration.conf``` on running PostgreSQL DB with existing public schema
 
 ## REST APIs
-Service expose REST APIs to manipulate configuration and runtime of the task adn obtain tasks results
+Service expose REST APIs to manipulate configuration and runtime of the task and obtain tasks results
 
 ### Tasks API
 ```GET /tasks/``` provide all existing tasks in the system  
