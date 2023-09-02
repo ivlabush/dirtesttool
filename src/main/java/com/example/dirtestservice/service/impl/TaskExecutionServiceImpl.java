@@ -4,6 +4,7 @@ import com.example.dirtestservice.configuration.RunConfiguration;
 import com.example.dirtestservice.entity.ErrorEntity;
 import com.example.dirtestservice.entity.TaskEntity;
 import com.example.dirtestservice.entity.TaskResultEntity;
+import com.example.dirtestservice.exceptions.EmptyWordlistException;
 import com.example.dirtestservice.exceptions.TaskNotFoundException;
 import com.example.dirtestservice.exceptions.UnableToReadFileException;
 import com.example.dirtestservice.exceptions.WordlistNotFoundException;
@@ -63,7 +64,11 @@ public class TaskExecutionServiceImpl implements TaskExecutionService {
         List<InputStream> streams = new ArrayList<>(10);
         for (String fileName : configuration.getWordlists()) {
             try {
-                streams.add(loader.getResource("classpath:" + fileName).getInputStream());
+                InputStream stream = loader.getResource("classpath:" + fileName).getInputStream();
+                if (stream.available() == 0) {
+                    throw new EmptyWordlistException("File is empty");
+                }
+                streams.add(stream);
             } catch (IOException e) {
                 throw new WordlistNotFoundException("Wordlist by name " + fileName + " wasn't found in resource folder");
             }

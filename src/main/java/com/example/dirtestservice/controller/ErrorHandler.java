@@ -1,10 +1,7 @@
 package com.example.dirtestservice.controller;
 
 import com.example.dirtestservice.dto.ErrorResponseDto;
-import com.example.dirtestservice.exceptions.TaskNotFoundException;
-import com.example.dirtestservice.exceptions.TaskResultsNotFoundException;
-import com.example.dirtestservice.exceptions.UnableToReadFileException;
-import com.example.dirtestservice.exceptions.WordlistNotFoundException;
+import com.example.dirtestservice.exceptions.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -66,6 +63,16 @@ public class ErrorHandler {
     @ResponseBody
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     public ErrorResponseDto handleWordlistNotFoundException(WordlistNotFoundException e) {
+        return ErrorResponseDto.builder()
+                .message(e.getMessage())
+                .date(new Date())
+                .build();
+    }
+
+    @ExceptionHandler(value = EmptyWordlistException.class)
+    @ResponseBody
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+    public ErrorResponseDto handleEmptyFileException(EmptyWordlistException e) {
         return ErrorResponseDto.builder()
                 .message(e.getMessage())
                 .date(new Date())
