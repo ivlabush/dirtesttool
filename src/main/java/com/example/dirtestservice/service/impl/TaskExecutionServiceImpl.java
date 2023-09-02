@@ -19,10 +19,7 @@ import org.springframework.retry.support.RetryTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -76,7 +73,7 @@ public class TaskExecutionServiceImpl implements TaskExecutionService {
                         .supplyAsync(() -> submitRequest(baseUrl + path), executor)
                         .thenAcceptAsync(pair -> createTaskResult(taskId, pair), executor);
             } catch (IOException e) {
-                throw new UnableToReadFileException("Unable to read file");
+                throw new UnableToReadFileException("Unable to read file. Exception message: " + e.getMessage());
             }
         }
     }

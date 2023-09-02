@@ -3,6 +3,8 @@ package com.example.dirtestservice.controller;
 import com.example.dirtestservice.dto.ErrorDto;
 import com.example.dirtestservice.exceptions.TaskNotFoundException;
 import com.example.dirtestservice.exceptions.TaskResultsNotFoundException;
+import com.example.dirtestservice.exceptions.UnableToReadFileException;
+import com.example.dirtestservice.exceptions.WordlistNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -48,6 +50,26 @@ public class ErrorHandler {
                 .date(date)
                 .build()));
         return errorsDto;
+    }
+
+    @ExceptionHandler(value = UnableToReadFileException.class)
+    @ResponseBody
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+    public ErrorDto handleUnableReadFileException(UnableToReadFileException e) {
+        return ErrorDto.builder()
+                .message(e.getMessage())
+                .date(new Date())
+                .build();
+    }
+
+    @ExceptionHandler(value = WordlistNotFoundException.class)
+    @ResponseBody
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+    public ErrorDto handleWordlistNotFoundException(WordlistNotFoundException e) {
+        return ErrorDto.builder()
+                .message(e.getMessage())
+                .date(new Date())
+                .build();
     }
 
     @ExceptionHandler(value = Exception.class)
