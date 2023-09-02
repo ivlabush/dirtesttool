@@ -8,7 +8,7 @@ Automation service for testing directories of Web Applications.
 3. Maven 3.8.1+
 
 ## Migration
-1. Update conf/migration.conf file, add username and password for root user
+1. Update conf/migration.conf file, change username and password for root user
 2. Run ```mvn clean flyway:migrate -Dflyway.configFiles=migration.conf``` on running PostgreSQL DB with existing public schema
 
 ## REST APIs
