@@ -11,6 +11,11 @@ Automation service for testing directories of Web Applications.
 ## Migration
 1. Update conf/migration.conf file, change username and password for root user
 2. Run ```mvn clean flyway:migrate -Dflyway.configFiles=migration.conf``` on running PostgreSQL DB with existing public schema
+
+## Configuration
+1. Place needed wordlists in /src/main/resource folder
+2. Update application.yaml and provide needed credentials for DB, desired wordlists, success and error status codes,
+backoff, retries, and desired number of parallel threads for task execution  
    
 ## Run Service
 Run ```mvn spring-boot:run``` to run the service. Default service port is 8080

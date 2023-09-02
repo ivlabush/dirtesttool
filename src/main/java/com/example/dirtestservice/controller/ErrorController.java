@@ -1,7 +1,6 @@
 package com.example.dirtestservice.controller;
 
 import com.example.dirtestservice.dto.ErrorDto;
-import com.example.dirtestservice.dto.TaskDto;
 import com.example.dirtestservice.service.ErrorService;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;

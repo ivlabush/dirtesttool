@@ -1,7 +1,7 @@
 run.config:
   # wordlists location should be in resource folder
   wordlists: wordlist1.txt, wordlist2.txt
-  # configurable status codes which should be treated as successful
+  # status codes which should be treated as successful
   codes: 200, 301
   stop:
     # status codes that should stop processing after number of retries
