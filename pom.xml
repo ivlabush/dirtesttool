@@ -11,7 +11,7 @@
 
     <groupId>com.example</groupId>
     <artifactId>dirtestservice</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
+    <version>1.0.0-SNAPTHOT</version>
     <name>DirTestService</name>
 
     <description>Service designed for Web Application testing purposes</description>
