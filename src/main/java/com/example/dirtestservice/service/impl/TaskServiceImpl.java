@@ -4,12 +4,12 @@ import com.example.dirtestservice.dto.TaskDto;
 import com.example.dirtestservice.entity.TaskEntity;
 import com.example.dirtestservice.exceptions.TaskNotFoundException;
 import com.example.dirtestservice.repository.TaskRepository;
-import com.example.dirtestservice.service.TaskExecutionService;
 import com.example.dirtestservice.service.TaskService;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.UUID;
@@ -18,7 +18,6 @@ import java.util.UUID;
 @RequiredArgsConstructor(onConstructor = @__(@Autowired))
 public class TaskServiceImpl implements TaskService {
 
-    private final TaskExecutionService executionService;
     private final TaskRepository repository;
     private final ModelMapper mapper;
 
@@ -48,6 +47,7 @@ public class TaskServiceImpl implements TaskService {
     }
 
     @Override
+    @Transactional(rollbackFor = Throwable.class)
     public TaskEntity createTask(TaskDto task) {
         String id = UUID.randomUUID().toString();
         task.setId(id);
@@ -56,9 +56,16 @@ public class TaskServiceImpl implements TaskService {
     }
 
     @Override
+    @Transactional(rollbackFor = Throwable.class)
     public TaskEntity updateTask(String id, TaskDto task) {
         TaskEntity entity = getTaskById(id);
         entity.setBaseUrl(task.getBaseUrl());
+        return repository.save(entity);
+    }
+
+    @Override
+    @Transactional(rollbackFor = Throwable.class)
+    public TaskEntity save(TaskEntity entity) {
         return repository.save(entity);
     }
 
@@ -80,10 +87,5 @@ public class TaskServiceImpl implements TaskService {
     @Override
     public void deleteTaskByBaseUrlContains(String baseUrl) {
         repository.deleteAllByBaseUrlContains(baseUrl);
-    }
-
-    @Override
-    public void startTask(String id) {
-        executionService.startTask(id);
     }
 }

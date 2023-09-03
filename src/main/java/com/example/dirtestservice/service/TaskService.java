@@ -19,6 +19,8 @@ public interface TaskService {
 
     TaskEntity updateTask(String id, TaskDto task);
 
+    TaskEntity save(TaskEntity entity);
+
     void deleteAllTasks();
 
     void deleteTask(String id);
@@ -26,7 +28,4 @@ public interface TaskService {
     void deleteTaskByBaseUrl(String baseUrl);
 
     void deleteTaskByBaseUrlContains(String baseUrl);
-
-    void startTask(String id);
-
 }

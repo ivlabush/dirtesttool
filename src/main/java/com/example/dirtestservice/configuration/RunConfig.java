@@ -9,7 +9,7 @@ import java.util.List;
 @Configuration
 @ConfigurationProperties(prefix = "run.config")
 @Data
-public class RunConfiguration {
+public class RunConfig {
 
     private List<String> wordlists;
     private List<Integer> codes;

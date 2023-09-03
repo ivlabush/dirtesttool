@@ -1,8 +1,6 @@
 package com.example.dirtestservice.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.Data;
 
 @Entity
@@ -13,6 +11,8 @@ public class TaskResultEntity {
     @Id
     private String id;
     private String url;
-    private String taskId;
+    @ManyToOne
+    @JoinColumn(name = "task_id", nullable = false)
+    private TaskEntity task;
     private Integer statusCode;
 }

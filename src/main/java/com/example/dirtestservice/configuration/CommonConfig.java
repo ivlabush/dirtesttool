@@ -3,12 +3,9 @@ package com.example.dirtestservice.configuration;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 import org.springframework.classify.Classifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Scope;
-import org.springframework.http.HttpStatusCode;
 import org.springframework.retry.RetryPolicy;
 import org.springframework.retry.backoff.FixedBackOffPolicy;
 import org.springframework.retry.policy.ExceptionClassifierRetryPolicy;
@@ -18,14 +15,11 @@ import org.springframework.retry.support.RetryTemplate;
 import org.springframework.web.client.HttpStatusCodeException;
 import org.springframework.web.client.RestTemplate;
 
-import java.util.concurrent.Executor;
-import java.util.concurrent.Executors;
-
 @Configuration
 @RequiredArgsConstructor(onConstructor = @__(@Autowired))
 public class CommonConfig {
 
-    private final RunConfiguration configuration;
+    private final RunConfig configuration;
 
     @Bean
     public ModelMapper mapper() {

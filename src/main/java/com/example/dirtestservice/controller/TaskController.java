@@ -1,6 +1,7 @@
 package com.example.dirtestservice.controller;
 
 import com.example.dirtestservice.dto.TaskDto;
+import com.example.dirtestservice.service.TaskExecutionService;
 import com.example.dirtestservice.service.TaskService;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
@@ -23,6 +24,7 @@ import java.util.List;
 public class TaskController {
 
     private final TaskService service;
+    private final TaskExecutionService executionService;
     private final ModelMapper mapper;
 
     private static final Type type = new TypeToken<List<TaskDto>>() {
@@ -92,7 +94,7 @@ public class TaskController {
     @PostMapping("/start/{id}")
     @ResponseStatus(HttpStatus.ACCEPTED)
     public String startTask(@PathVariable @NotBlank String id) {
-        service.startTask(id);
+        executionService.startTask(id);
         return "Execution of task " + id + " started at " + new Date();
     }
 }

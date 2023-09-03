@@ -3,8 +3,8 @@ package com.example.dirtestservice.entity;
 import jakarta.persistence.*;
 import lombok.Data;
 
-import java.util.HashSet;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Data
@@ -15,10 +15,8 @@ public class TaskEntity {
     private String id;
     private String name;
     private String baseUrl;
-    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
-    @JoinColumn(name = "taskId")
-    private Set<TaskResultEntity> taskResults = new HashSet<>();
-    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
-    @JoinColumn(name = "taskId")
-    private Set<ErrorEntity> errors = new HashSet<>();
+    @OneToMany(mappedBy = "task", cascade = CascadeType.ALL)
+    private List<TaskResultEntity> taskResults = new ArrayList<>();
+    @OneToMany(mappedBy = "task", cascade = CascadeType.ALL)
+    private List<ErrorEntity> errors = new ArrayList<>();
 }
