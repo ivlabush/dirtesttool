@@ -94,24 +94,6 @@ public class TaskExecutionServiceImpl implements TaskExecutionService {
     private Pair<String, ResponseEntity<String>> submitRequest(String url) {
         ResponseEntity<String> response = retryTemplate.execute(args ->
                 restTemplate.exchange(url, HttpMethod.GET, null, String.class));
-//            ResponseEntity<String> r;
-//            try {
-//                log.debug("Submit request for url {}", url);
-//                r = restTemplate.exchange(url, HttpMethod.GET, null, String.class);
-//            } catch (RestClientException e) {
-//                log.debug("Caught exception for url {}. Exception ", url, e);
-//                if (e instanceof RestClientResponseException) {
-//                    List<Integer> retryCodes = configuration.getStop().getCodes();
-//                    Integer errorCode = ((RestClientResponseException) e).getStatusCode().value();
-//                    if (retryCodes.contains(errorCode)) {
-//                        throw e;
-//                    }
-//                }
-//                // it's just a hack
-//                r = new ResponseEntity<>(HttpStatusCode.valueOf(418));
-//            }
-//            return r;
-//        });
         log.debug("Got response with status code {} for url {}", response.getStatusCode().value(), url);
         return new Pair<>(url, response);
     }
