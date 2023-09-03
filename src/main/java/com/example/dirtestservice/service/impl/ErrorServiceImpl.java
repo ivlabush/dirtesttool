@@ -57,13 +57,23 @@ public class ErrorServiceImpl implements ErrorService {
         entity.setId(UUID.randomUUID().toString());
         entity.setTask(task);
         entity.setUrl(url);
-        if (e instanceof RestClientResponseException) {
-            entity.setStatusCode(((RestClientResponseException) e).getStatusCode().value());
+
+        Throwable cause = e.getCause();
+
+        if (cause instanceof RestClientResponseException) {
+            entity.setStatusCode(((RestClientResponseException) cause).getStatusCode().value());
         } else {
             entity.setStatusCode(0);
         }
-        entity.setMessage(e.getMessage());
-        entity.setStacktrace(ExceptionUtils.getStackTrace(e));
+
+        String message = cause.getMessage();
+        if (message.length() > 255) message = message.substring(0, 255);
+        entity.setMessage(message);
+
+        String stacktrace = ExceptionUtils.getStackTrace(cause);
+        if (stacktrace.length() > 255) stacktrace = stacktrace.substring(0, 255);
+
+        entity.setStacktrace(stacktrace);
         return repository.save(entity);
     }
 

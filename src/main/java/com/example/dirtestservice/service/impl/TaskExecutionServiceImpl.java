@@ -15,12 +15,9 @@ import org.javatuples.Pair;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ResourceLoader;
 import org.springframework.http.HttpMethod;
-import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.retry.support.RetryTemplate;
 import org.springframework.stereotype.Service;
-import org.springframework.web.client.RestClientException;
-import org.springframework.web.client.RestClientResponseException;
 import org.springframework.web.client.RestTemplate;
 
 import java.io.BufferedReader;
@@ -95,25 +92,26 @@ public class TaskExecutionServiceImpl implements TaskExecutionService {
     }
 
     private Pair<String, ResponseEntity<String>> submitRequest(String url) {
-        ResponseEntity<String> response = retryTemplate.execute(args -> {
-            ResponseEntity<String> r;
-            try {
-                log.debug("Submit request for url {}", url);
-                r = restTemplate.exchange(url, HttpMethod.GET, null, String.class);
-            } catch (RestClientException e) {
-                log.debug("Caught exception for url {}. Exception ", url, e);
-                if (e instanceof RestClientResponseException) {
-                    List<Integer> retryCodes = configuration.getStop().getCodes();
-                    Integer errorCode = ((RestClientResponseException) e).getStatusCode().value();
-                    if (retryCodes.contains(errorCode)) {
-                        throw e;
-                    }
-                }
-                // it's just a hack
-                r = new ResponseEntity<>(HttpStatusCode.valueOf(418));
-            }
-            return r;
-        });
+        ResponseEntity<String> response = retryTemplate.execute(args ->
+                restTemplate.exchange(url, HttpMethod.GET, null, String.class));
+//            ResponseEntity<String> r;
+//            try {
+//                log.debug("Submit request for url {}", url);
+//                r = restTemplate.exchange(url, HttpMethod.GET, null, String.class);
+//            } catch (RestClientException e) {
+//                log.debug("Caught exception for url {}. Exception ", url, e);
+//                if (e instanceof RestClientResponseException) {
+//                    List<Integer> retryCodes = configuration.getStop().getCodes();
+//                    Integer errorCode = ((RestClientResponseException) e).getStatusCode().value();
+//                    if (retryCodes.contains(errorCode)) {
+//                        throw e;
+//                    }
+//                }
+//                // it's just a hack
+//                r = new ResponseEntity<>(HttpStatusCode.valueOf(418));
+//            }
+//            return r;
+//        });
         log.debug("Got response with status code {} for url {}", response.getStatusCode().value(), url);
         return new Pair<>(url, response);
     }
@@ -129,7 +127,7 @@ public class TaskExecutionServiceImpl implements TaskExecutionService {
     }
 
     private Void createErrorResult(TaskEntity task, String url, Throwable e) {
-        log.debug("Create Error for url {}", url);
+        log.debug("Create Error for url {}. Exception ", url, e);
         errorService.createError(task, url, e);
         taskService.save(task);
         return null;
