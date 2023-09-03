@@ -32,7 +32,9 @@ Service expose REST APIs to manipulate configuration and runtime of the task, an
 
 ### Tasks API
 ```GET /tasks/``` provide all existing tasks in the system  
-```GET /task/{id}``` provide task by id  
+```GET /tasks/{id}``` provide task by id  
+```GET /tasks/url/{url}``` provide tasks by url  
+```GET /tasks/url/contains/{url}``` provide tasks by URL containing particular symbols  
 ```POST /tasks``` body ```{"baseUrl": "valid URL example"}``` create task for particular base URL  
 ```PUT /tasks/{id}``` body ```{"baseUrl": "valid URL example"}``` update existing task  
 ```DELETE /tasks``` delete all tasks in the system
