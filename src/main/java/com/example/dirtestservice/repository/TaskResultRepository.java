@@ -1,5 +1,6 @@
 package com.example.dirtestservice.repository;
 
+import com.example.dirtestservice.entity.TaskEntity;
 import com.example.dirtestservice.entity.TaskResultEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -16,7 +17,7 @@ public interface TaskResultRepository extends JpaRepository<TaskResultEntity, St
     @Query("from TaskResultEntity e where e.url like %?1%")
     Optional<List<TaskResultEntity>> findAllByUrlContains(String url);
 
-    void deleteAllByTaskId(String id);
+    void deleteAllByTask(TaskEntity entity);
 
     void deleteAllByUrl(String url);
 

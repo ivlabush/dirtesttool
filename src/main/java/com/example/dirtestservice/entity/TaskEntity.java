@@ -19,4 +19,13 @@ public class TaskEntity {
     private List<TaskResultEntity> taskResults = new ArrayList<>();
     @OneToMany(mappedBy = "task", cascade = CascadeType.ALL)
     private List<ErrorEntity> errors = new ArrayList<>();
+
+    @Override
+    public String toString() {
+        return "TaskEntity{" +
+                "id='" + id + '\'' +
+                ", name='" + name + '\'' +
+                ", baseUrl='" + baseUrl + '\'' +
+                '}';
+    }
 }

@@ -1,6 +1,7 @@
 package com.example.dirtestservice.repository;
 
 import com.example.dirtestservice.entity.ErrorEntity;
+import com.example.dirtestservice.entity.TaskEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
@@ -18,7 +19,7 @@ public interface ErrorRepository extends JpaRepository<ErrorEntity, String> {
     @Query("from ErrorEntity as e where e.url like %?1%")
     Optional<List<ErrorEntity>> findAllByUrlContains(String url);
 
-    void deleteAllByTaskId(String id);
+    void deleteAllByTask(TaskEntity entity);
 
     void deleteAllByUrl(String url);
 

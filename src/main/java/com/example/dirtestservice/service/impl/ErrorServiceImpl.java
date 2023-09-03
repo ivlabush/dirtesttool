@@ -3,7 +3,9 @@ package com.example.dirtestservice.service.impl;
 import com.example.dirtestservice.entity.ErrorEntity;
 import com.example.dirtestservice.entity.TaskEntity;
 import com.example.dirtestservice.exceptions.ErrorNotFoundException;
+import com.example.dirtestservice.exceptions.TaskNotFoundException;
 import com.example.dirtestservice.repository.ErrorRepository;
+import com.example.dirtestservice.repository.TaskRepository;
 import com.example.dirtestservice.service.ErrorService;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.exception.ExceptionUtils;
@@ -20,6 +22,7 @@ import java.util.UUID;
 public class ErrorServiceImpl implements ErrorService {
 
     private final ErrorRepository repository;
+    private final TaskRepository taskRepository;
 
     @Override
     public List<ErrorEntity> getAllErrors() {
@@ -83,8 +86,11 @@ public class ErrorServiceImpl implements ErrorService {
     }
 
     @Override
+    @Transactional(rollbackFor = Throwable.class)
     public void deleteErrorsByTaskId(String id) {
-        repository.deleteAllByTaskId(id);
+        TaskEntity entity = taskRepository.findById(id)
+                .orElseThrow(() -> new TaskNotFoundException("Task with id=" + id + " wasn't found"));
+        repository.deleteAllByTask(entity);
     }
 
     @Override
