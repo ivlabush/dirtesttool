@@ -1,6 +1,13 @@
 # Dir Test Service
 
-Automation service for testing directories of Web Applications.
+Automation service for testing directories of Web Applications  
+
+Key features:
+ - persistent run configuration
+ - multiple word lists
+ - request retries depends on returned response status code
+ - persistent results and errors
+ - async multithreading execution
 
 ## Prerequisites
 1. Java 17
