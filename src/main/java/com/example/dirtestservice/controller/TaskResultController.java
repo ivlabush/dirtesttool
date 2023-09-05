@@ -45,15 +45,15 @@ public class TaskResultController {
         return mapper.map(service.getTaskResultById(id), TaskResultDto.class);
     }
 
-    @GetMapping("/url/{url}")
+    @GetMapping("/url")
     @ResponseStatus(HttpStatus.OK)
-    public List<TaskDto> getTasksByUrl(@PathVariable @NotBlank String url) {
+    public List<TaskDto> getTasksByUrl(@RequestParam @NotBlank String url) {
         return mapper.map(service.getTaskResultsByUrl(url), type);
     }
 
-    @GetMapping("/url/contains/{url}")
+    @GetMapping("/url/contains")
     @ResponseStatus(HttpStatus.OK)
-    public List<TaskDto> getTasksByUrlContains(@PathVariable @NotBlank String url) {
+    public List<TaskDto> getTasksByUrlContains(@RequestParam @NotBlank String url) {
         return mapper.map(service.getTaskResultsByUrlContains(url), type);
     }
 
@@ -69,15 +69,15 @@ public class TaskResultController {
         service.deleteAllTaskResults();
     }
 
-    @DeleteMapping("/url/{url}")
+    @DeleteMapping("/url")
     @ResponseStatus(HttpStatus.ACCEPTED)
-    public void deleteTaskResultsByUrl(@PathVariable @NotBlank String url) {
+    public void deleteTaskResultsByUrl(@RequestParam @NotBlank String url) {
         service.deleteAllTaskResultsByUrl(url);
     }
 
-    @DeleteMapping("/url/contains/{url}")
+    @DeleteMapping("/url/contains")
     @ResponseStatus(HttpStatus.ACCEPTED)
-    public void deleteTaskResultsByUrlContains(@PathVariable @NotBlank String url) {
+    public void deleteTaskResultsByUrlContains(@RequestParam @NotBlank String url) {
         service.deleteAllTaskResultsByUrlContains(url);
     }
 }

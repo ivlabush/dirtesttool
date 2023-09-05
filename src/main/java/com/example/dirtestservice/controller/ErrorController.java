@@ -45,15 +45,15 @@ public class ErrorController {
         return mapper.map(service.getErrorsByStatusCode(code), type);
     }
 
-    @GetMapping("/url/{url}")
+    @GetMapping("/url")
     @ResponseStatus(HttpStatus.OK)
-    public List<ErrorDto> getAllErrorsByUrl(@PathVariable @NotBlank String url) {
+    public List<ErrorDto> getAllErrorsByUrl(@RequestParam @NotBlank String url) {
         return mapper.map(service.getErrorsByUrl(url), type);
     }
 
-    @GetMapping("/url/contains/{url}")
+    @GetMapping("/url/contains")
     @ResponseStatus(HttpStatus.OK)
-    public List<ErrorDto> getAllErrorsByUrlContains(@PathVariable @NotBlank String url) {
+    public List<ErrorDto> getAllErrorsByUrlContains(@RequestParam @NotBlank String url) {
         return mapper.map(service.getErrorsByUrlContains(url), type);
     }
 
@@ -69,15 +69,15 @@ public class ErrorController {
         service.deleteErrorsByTaskId(id);
     }
 
-    @DeleteMapping("/url/{url}")
+    @DeleteMapping("/url")
     @ResponseStatus(HttpStatus.OK)
-    public void deleteAllErrorsByUrl(@PathVariable @NotBlank String url) {
+    public void deleteAllErrorsByUrl(@RequestParam @NotBlank String url) {
         service.deleteErrorsByUrl(url);
     }
 
-    @DeleteMapping("/url/contains/{url}")
+    @DeleteMapping("/url/contains")
     @ResponseStatus(HttpStatus.OK)
-    public void deleteAllErrorsByUrlContains(@PathVariable @NotBlank String url) {
+    public void deleteAllErrorsByUrlContains(@RequestParam @NotBlank String url) {
         service.deleteErrorsByUrlContains(url);
     }
 }

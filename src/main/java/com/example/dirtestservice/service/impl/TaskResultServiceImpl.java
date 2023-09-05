@@ -71,16 +71,19 @@ public class TaskResultServiceImpl implements TaskResultService {
     }
 
     @Override
+    @Transactional(rollbackFor = Throwable.class)
     public void deleteAllTaskResults() {
         repository.deleteAll();
     }
 
     @Override
+    @Transactional(rollbackFor = Throwable.class)
     public void deleteAllTaskResultsByUrl(String url) {
         repository.deleteAllByUrl(url);
     }
 
     @Override
+    @Transactional(rollbackFor = Throwable.class)
     public void deleteAllTaskResultsByUrlContains(String url) {
         repository.deleteAllByUrlContains(url);
     }

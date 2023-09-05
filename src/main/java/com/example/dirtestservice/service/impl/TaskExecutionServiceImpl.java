@@ -1,6 +1,7 @@
 package com.example.dirtestservice.service.impl;
 
 import com.example.dirtestservice.configuration.RunConfig;
+import com.example.dirtestservice.configuration.StopConfig;
 import com.example.dirtestservice.entity.TaskEntity;
 import com.example.dirtestservice.exceptions.EmptyWordlistException;
 import com.example.dirtestservice.exceptions.UnableToReadFileException;
@@ -18,6 +19,7 @@ import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.retry.support.RetryTemplate;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestClientResponseException;
 import org.springframework.web.client.RestTemplate;
 
 import java.io.BufferedReader;
@@ -102,16 +104,30 @@ public class TaskExecutionServiceImpl implements TaskExecutionService {
         String url = pair.getValue0();
         int code = pair.getValue1().getStatusCode().value();
         if (configuration.getCodes().contains(code)) {
-            log.debug("Create Task Result for url {}", url);
             resultService.createTaskResult(url, task, code);
             taskService.save(task);
+            log.debug("Created Task Result for url {}. Status code {}", url, code);
         }
     }
 
     private Void createErrorResult(TaskEntity task, String url, Throwable e) {
-        log.debug("Create Error for url {}. Exception ", url, e);
+        Throwable cause = e.getCause();
+
+        if (cause instanceof RestClientResponseException) {
+            RestClientResponseException responseException = (RestClientResponseException) cause;
+
+            StopConfig stop = configuration.getStop();
+            int responseStatusCode = responseException.getStatusCode().value();
+            if (!stop.getCodes().contains(responseStatusCode)) {
+                log.debug("Omit exceptional response with status code {} which will be not stored as error",
+                        responseStatusCode);
+                return null;
+            }
+        }
+
         errorService.createError(task, url, e);
         taskService.save(task);
+        log.debug("Created Error for url {}. Exception ", url, e);
         return null;
     }
 }

@@ -1,7 +1,10 @@
 package com.example.dirtestservice.configuration;
 
+import com.example.dirtestservice.dto.TaskResultDto;
+import com.example.dirtestservice.entity.TaskResultEntity;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
+import org.modelmapper.TypeMap;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.classify.Classifier;
 import org.springframework.context.annotation.Bean;
@@ -27,6 +30,12 @@ public class CommonConfig {
         mapper.getConfiguration()
                 .setFieldMatchingEnabled(true)
                 .setFieldAccessLevel(org.modelmapper.config.Configuration.AccessLevel.PRIVATE);
+
+        TypeMap<TaskResultEntity, TaskResultDto> taskResultTypeMap
+                = mapper.createTypeMap(TaskResultEntity.class, TaskResultDto.class);
+
+        taskResultTypeMap.addMappings(m -> m.map(src -> src.getTask().getId(), TaskResultDto::setTaskId));
+
         return mapper;
     }
 
@@ -53,7 +62,7 @@ public class CommonConfig {
         return throwable -> {
             if (throwable instanceof HttpStatusCodeException) {
                 return getRetryPolicyForStatus(config,
-                        ((HttpStatusCodeException)throwable).getStatusCode().value(),
+                        ((HttpStatusCodeException) throwable).getStatusCode().value(),
                         simpleRetryPolicy,
                         neverRetryPolicy);
             }

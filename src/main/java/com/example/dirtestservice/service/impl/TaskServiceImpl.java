@@ -70,21 +70,25 @@ public class TaskServiceImpl implements TaskService {
     }
 
     @Override
+    @Transactional(rollbackFor = Throwable.class)
     public void deleteAllTasks() {
         repository.deleteAll();
     }
 
     @Override
+    @Transactional(rollbackFor = Throwable.class)
     public void deleteTask(String id) {
         repository.deleteById(id);
     }
 
     @Override
+    @Transactional(rollbackFor = Throwable.class)
     public void deleteTaskByBaseUrl(String baseUrl) {
         repository.deleteAllByBaseUrl(baseUrl);
     }
 
     @Override
+    @Transactional(rollbackFor = Throwable.class)
     public void deleteTaskByBaseUrlContains(String baseUrl) {
         repository.deleteAllByBaseUrlContains(baseUrl);
     }

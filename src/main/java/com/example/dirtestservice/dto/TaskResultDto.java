@@ -7,5 +7,6 @@ public class TaskResultDto {
 
     private String id;
     private String url;
+    private String taskId;
     private int status;
 }

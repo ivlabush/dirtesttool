@@ -81,6 +81,7 @@ public class ErrorServiceImpl implements ErrorService {
     }
 
     @Override
+    @Transactional(rollbackFor = Throwable.class)
     public void deleteAllErrors() {
         repository.deleteAll();
     }
@@ -94,11 +95,13 @@ public class ErrorServiceImpl implements ErrorService {
     }
 
     @Override
+    @Transactional(rollbackFor = Throwable.class)
     public void deleteErrorsByUrl(String url) {
         repository.deleteAllByUrl(url);
     }
 
     @Override
+    @Transactional(rollbackFor = Throwable.class)
     public void deleteErrorsByUrlContains(String url) {
         repository.deleteAllByUrlContains(url);
     }

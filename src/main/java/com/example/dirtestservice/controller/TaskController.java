@@ -42,15 +42,15 @@ public class TaskController {
         return mapper.map(service.getTaskById(id), TaskDto.class);
     }
 
-    @GetMapping("/url/{url}")
+    @GetMapping("/url")
     @ResponseStatus(HttpStatus.OK)
-    public List<TaskDto> getTasksByUrl(@PathVariable @NotBlank String url) {
+    public List<TaskDto> getTasksByUrl(@RequestParam @NotBlank String url) {
         return mapper.map(service.getTaskByUrl(url), type);
     }
 
-    @GetMapping("/url/contains/{url}")
+    @GetMapping("/url/contains")
     @ResponseStatus(HttpStatus.OK)
-    public List<TaskDto> getTasksByUrlContains(@PathVariable @NotBlank String url) {
+    public List<TaskDto> getTasksByUrlContains(@RequestParam @NotBlank String url) {
         return mapper.map(service.getTasksByUrlContains(url), type);
     }
 
