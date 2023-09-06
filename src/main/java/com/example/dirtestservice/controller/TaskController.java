@@ -79,15 +79,15 @@ public class TaskController {
         service.deleteTask(id);
     }
 
-    @DeleteMapping("/url/{url}")
+    @DeleteMapping("/url")
     @ResponseStatus(HttpStatus.OK)
-    public void deleteTaskByUrl(@PathVariable @NotBlank String url) {
+    public void deleteTaskByUrl(@RequestParam @NotBlank String url) {
         service.deleteTaskByBaseUrl(url);
     }
 
-    @DeleteMapping("/url/contains/{url}")
+    @DeleteMapping("/url/contains")
     @ResponseStatus(HttpStatus.OK)
-    public void deleteTaskByUrlContains(@PathVariable @NotBlank String url) {
+    public void deleteTaskByUrlContains(@RequestParam @NotBlank String url) {
         service.deleteTaskByBaseUrlContains(url);
     }
 
