@@ -1,14 +1,13 @@
-package com.example.dirtestservice.service;
+package com.example.dirtestservice.service.impl;
 
 import com.example.dirtestservice.entity.ErrorEntity;
 import com.example.dirtestservice.entity.TaskEntity;
 import com.example.dirtestservice.exceptions.ErrorNotFoundException;
 import com.example.dirtestservice.repository.ErrorRepository;
 import com.example.dirtestservice.repository.TaskRepository;
-import com.example.dirtestservice.service.impl.ErrorServiceImpl;
+import com.example.dirtestservice.service.ErrorService;
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mockito;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.web.client.HttpClientErrorException;
@@ -25,8 +24,8 @@ import static org.mockito.Mockito.*;
 
 public class ErrorServiceTest {
 
-    private final ErrorRepository errorRepository = Mockito.mock(ErrorRepository.class);
-    private final TaskRepository taskRepository = Mockito.mock(TaskRepository.class);
+    private final ErrorRepository errorRepository = mock(ErrorRepository.class);
+    private final TaskRepository taskRepository = mock(TaskRepository.class);
 
     private final ErrorService service = new ErrorServiceImpl(errorRepository, taskRepository);
 
@@ -36,7 +35,6 @@ public class ErrorServiceTest {
     @Test
     public void testGetAllErrors() {
         service.getAllErrors();
-
         verify(errorRepository, times(1)).findAll();
     }
 
@@ -145,7 +143,7 @@ public class ErrorServiceTest {
         assertThat(error).extracting(ErrorEntity::getUrl)
                 .isEqualTo(entity.getBaseUrl());
         assertThat(error).extracting(ErrorEntity::getStatusCode)
-                .isEqualTo(((RestClientResponseException)exception.getCause()).getStatusCode().value());
+                .isEqualTo(((RestClientResponseException) exception.getCause()).getStatusCode().value());
         assertThat(error).extracting(ErrorEntity::getMessage)
                 .extracting(String::length)
                 .isEqualTo(255);
