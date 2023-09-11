@@ -27,6 +27,9 @@ backoff, retries, and desired number of parallel threads for task execution
 ## Run Service
 Run ```mvn spring-boot:run``` to run the service. Default service port is 8080
 
+## Run tests
+In order to run tests Docker daemon need to be started
+
 ## REST APIs
 Service expose REST APIs to manipulate configuration and runtime of the task, and obtain tasks results or errors  
 
