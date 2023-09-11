@@ -64,6 +64,72 @@ public class ErrorControllerTest {
 
     @Test
     public void testGetAllErrors() {
+        createTaskWithError();
+
+        given()
+                .contentType(ContentType.JSON)
+                .when()
+                .get("/errors")
+                .then()
+                .statusCode(200)
+                .body(".", hasSize(1));
+    }
+
+    @Test
+    public void testGetErrorsByTaskId() {
+        TaskEntity entity = createTaskWithError();
+
+        given()
+                .contentType(ContentType.JSON)
+                .when()
+                .get("/errors/task/" + entity.getId())
+                .then()
+                .statusCode(200)
+                .body(".", hasSize(1));
+    }
+
+    @Test
+    public void testGetErrorsByStatusCode() {
+        TaskEntity entity = createTaskWithError();
+
+        given()
+                .contentType(ContentType.JSON)
+                .when()
+                .get("/errors/statuscode/400")
+                .then()
+                .statusCode(200)
+                .body(".", hasSize(1));
+    }
+
+    @Test
+    public void testGetErrorsByUrl() {
+        createTaskWithError();
+
+        given()
+                .contentType(ContentType.JSON)
+                .param("url", url + "1")
+                .when()
+                .get("/errors/url")
+                .then()
+                .statusCode(200)
+                .body(".", hasSize(1));
+    }
+
+    @Test
+    public void testGetErrorsByUrlContains() {
+        createTaskWithError();
+
+        given()
+                .contentType(ContentType.JSON)
+                .param("url", url)
+                .when()
+                .get("/errors/url/contains")
+                .then()
+                .statusCode(200)
+                .body(".", hasSize(1));
+    }
+
+    private TaskEntity createTaskWithError() {
         TaskDto dto = new TaskDto();
         dto.setBaseUrl(url);
 
@@ -78,12 +144,6 @@ public class ErrorControllerTest {
 
         errorService.createError(task, url + "1", new RuntimeException(cause));
 
-        given()
-                .contentType(ContentType.JSON)
-                .when()
-                .get("/errors")
-                .then()
-                .statusCode(200)
-                .body(".", hasSize(1));
+        return task;
     }
 }
