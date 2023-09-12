@@ -2,8 +2,9 @@ package com.example.dirtestservice.controller;
 
 import com.example.dirtestservice.dto.TaskDto;
 import com.example.dirtestservice.entity.TaskEntity;
-import com.example.dirtestservice.repository.TaskRepository;
-import com.example.dirtestservice.service.ErrorService;
+import com.example.dirtestservice.entity.TaskResultEntity;
+import com.example.dirtestservice.repository.TaskResultRepository;
+import com.example.dirtestservice.service.TaskResultService;
 import com.example.dirtestservice.service.TaskService;
 import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
@@ -13,9 +14,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.server.LocalServerPort;
 import org.springframework.boot.testcontainers.service.connection.ServiceConnection;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatusCode;
-import org.springframework.web.client.HttpClientErrorException;
 import org.testcontainers.containers.PostgreSQLContainer;
 import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
@@ -23,10 +21,9 @@ import org.testcontainers.junit.jupiter.Testcontainers;
 import static io.restassured.RestAssured.given;
 import static org.hamcrest.Matchers.*;
 
-
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @Testcontainers
-public class ErrorControllerTest {
+public class TaskResultsControllerTest {
 
     @LocalServerPort
     private Integer port;
@@ -38,177 +35,171 @@ public class ErrorControllerTest {
             .withUsername("root")
             .withPassword("toor");
 
+    private final String url = "http://localhost:8000/";
+
     @Autowired
-    private TaskRepository taskRepository;
+    private TaskResultRepository taskResultRepository;
 
     @Autowired
     private TaskService taskService;
 
     @Autowired
-    private ErrorService errorService;
-
-    private final String url = "http://localhost:8000/";
+    private TaskResultService taskResultService;
 
     @BeforeEach
     public void setUp() {
         RestAssured.baseURI = "http://localhost:" + port;
-        taskRepository.deleteAll();
+        taskResultRepository.deleteAll();
     }
 
     @Test
-    public void testGetAllErrors() {
-        createTaskWithError();
+    public void testGetAllTaskResults() {
+        createTaskWithTaskResults();
 
         given()
                 .contentType(ContentType.JSON)
                 .when()
-                .get("/errors")
+                .get("/taskresults")
                 .then()
                 .statusCode(200)
                 .body(".", hasSize(1));
     }
 
     @Test
-    public void testGetErrorsByTaskId() {
-        TaskEntity entity = createTaskWithError();
+    public void testGetAllErrorResultsByTaskId() {
+        TaskResultEntity result = createTaskWithTaskResults();
 
         given()
                 .contentType(ContentType.JSON)
                 .when()
-                .get("/errors/task/" + entity.getId())
+                .get("/taskresults/task/" + result.getTask().getId())
                 .then()
                 .statusCode(200)
                 .body(".", hasSize(1));
     }
 
     @Test
-    public void testGetErrorsByTaskIdEntityNotFound() {
-        createTaskWithError();
+    public void testGetAllTaskResultsByTaskIdEntityNotFound() {
+        createTaskWithTaskResults();
 
         given()
                 .contentType(ContentType.JSON)
                 .when()
-                .get("/errors/task/123")
+                .get("/taskresults/task/123")
                 .then()
                 .statusCode(404)
-                .body("message", equalTo("Errors for task id=123 weren't found"))
+                .body("message", equalTo("Task Results for taskId 123 weren't found"))
                 .body("date", is(notNullValue()));
     }
 
     @Test
-    public void testGetErrorsByStatusCode() {
-        createTaskWithError();
+    public void testGetTaskResultById() {
+        TaskResultEntity result = createTaskWithTaskResults();
 
         given()
                 .contentType(ContentType.JSON)
                 .when()
-                .get("/errors/statuscode/400")
+                .get("/taskresults/" + result.getId())
                 .then()
                 .statusCode(200)
-                .body(".", hasSize(1));
+                .body("id", equalTo(result.getId()))
+                .body("url", equalTo(result.getUrl()))
+                .body("taskId", equalTo(result.getTask().getId()))
+                .body("status", equalTo(result.getStatusCode()));
     }
 
     @Test
-    public void testGetErrorsByStatusCodeEntityNotFound() {
-        createTaskWithError();
+    public void testGetTaskResultByIdEntityNotFound() {
+        createTaskWithTaskResults();
 
         given()
                 .contentType(ContentType.JSON)
                 .when()
-                .get("/errors/statuscode/100")
+                .get("/taskresults/123")
                 .then()
                 .statusCode(404)
-                .body("message", equalTo("Errors by status code 100 weren't found"))
+                .body("message", equalTo("Task Results with id 123 wasn't found"))
                 .body("date", is(notNullValue()));
     }
 
     @Test
-    public void testGetErrorsByUrl() {
-        createTaskWithError();
+    public void testGetTaskResultsByUrl() {
+        createTaskWithTaskResults();
 
         given()
                 .contentType(ContentType.JSON)
                 .param("url", url + "1")
                 .when()
-                .get("/errors/url")
+                .get("/taskresults/url")
                 .then()
                 .statusCode(200)
                 .body(".", hasSize(1));
     }
 
     @Test
-    public void testGetErrorsByUrlEntityNotFound() {
-        createTaskWithError();
+    public void testGetTaskResultsByUrlEntityNotFound() {
+        createTaskWithTaskResults();
 
         given()
                 .contentType(ContentType.JSON)
                 .param("url", "aaa")
                 .when()
-                .get("/errors/url")
+                .get("/taskresults/url")
                 .then()
                 .statusCode(404)
-                .body("message", equalTo("Errors by url aaa weren't found"))
+                .body("message", equalTo("Task Results by url aaa weren't found"))
                 .body("date", is(notNullValue()));
     }
 
     @Test
-    public void testGetErrorsByUrlContains() {
-        createTaskWithError();
+    public void testGetTaskResultsByUrlContains() {
+        createTaskWithTaskResults();
 
         given()
                 .contentType(ContentType.JSON)
-                .param("url", url)
+                .param("url", url + "1")
                 .when()
-                .get("/errors/url/contains")
+                .get("/taskresults/url/contains")
                 .then()
                 .statusCode(200)
                 .body(".", hasSize(1));
     }
 
     @Test
-    public void testGetErrorsByUrlContainsEntityNotFound() {
-        createTaskWithError();
+    public void testGetTaskResultsByUrlContainsEntityNotFound() {
+        createTaskWithTaskResults();
 
         given()
                 .contentType(ContentType.JSON)
                 .param("url", "aaa")
                 .when()
-                .get("/errors/url/contains")
+                .get("/taskresults/url/contains")
                 .then()
                 .statusCode(404)
-                .body("message", equalTo("Errors by url contains aaa weren't found"))
+                .body("message", equalTo("Task Results by url aaa weren't found"))
                 .body("date", is(notNullValue()));
     }
 
     @Test
-    public void testDeleteAllErrorsByTaskIdTaskNotFound() {
-        createTaskWithError();
+    public void testDeleteByTaskIdTaskNotFound() {
+        createTaskWithTaskResults();
 
         given()
                 .contentType(ContentType.JSON)
                 .when()
-                .delete("/errors/task/123")
+                .delete("/taskresults/task/123")
                 .then()
                 .statusCode(404)
                 .body("message", equalTo("Task with id=123 wasn't found"))
                 .body("date", is(notNullValue()));
     }
 
-    private TaskEntity createTaskWithError() {
+    private TaskResultEntity createTaskWithTaskResults() {
         TaskDto dto = new TaskDto();
         dto.setBaseUrl(url);
 
         TaskEntity task = taskService.createTask(dto);
 
-        HttpClientErrorException cause = HttpClientErrorException
-                .create("Message1",
-                        HttpStatusCode.valueOf(400), "Status Text1", new HttpHeaders(), new byte[]{}, null);
-        StackTraceElement[] stackTrace = new StackTraceElement[]{new StackTraceElement("Class Loader Name", "Module Name", "1",
-                "Declaring Class", "Method Name", "File name", 1)};
-        cause.setStackTrace(stackTrace);
-
-        errorService.createError(task, url + "1", new RuntimeException(cause));
-
-        return task;
+        return taskResultService.createTaskResult(url + "1", task, 200);
     }
 }

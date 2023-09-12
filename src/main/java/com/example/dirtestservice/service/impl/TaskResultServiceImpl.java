@@ -31,7 +31,7 @@ public class TaskResultServiceImpl implements TaskResultService {
     public List<TaskResultEntity> getAllTaskResultsByTaskId(String id) {
         List<TaskResultEntity> result = repository.findAllByTaskId(id);
         if (result.isEmpty()) {
-            throw new TaskResultsNotFoundException("Task Results for taskId " + id + " wasn't found");
+            throw new TaskResultsNotFoundException("Task Results for taskId " + id + " weren't found");
         }
         return result;
     }
