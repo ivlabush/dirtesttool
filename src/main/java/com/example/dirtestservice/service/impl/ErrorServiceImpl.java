@@ -31,26 +31,38 @@ public class ErrorServiceImpl implements ErrorService {
 
     @Override
     public List<ErrorEntity> getErrorsByTaskId(String id) {
-        return repository.findAllByTaskId(id)
-                .orElseThrow(() -> new ErrorNotFoundException("Errors for task id=" + id + " weren't found"));
+        List<ErrorEntity> result = repository.findAllByTaskId(id);
+        if (result.isEmpty()) {
+            throw new ErrorNotFoundException("Errors for task id=" + id + " weren't found");
+        }
+        return result;
     }
 
     @Override
     public List<ErrorEntity> getErrorsByStatusCode(Integer statusCode) {
-        return repository.findAllByStatusCode(statusCode)
-                .orElseThrow(() -> new ErrorNotFoundException("Errors by status code " + statusCode + " weren't found"));
+        List<ErrorEntity> result = repository.findAllByStatusCode(statusCode);
+        if (result.isEmpty()) {
+            throw new ErrorNotFoundException("Errors by status code " + statusCode + " weren't found");
+        }
+        return result;
     }
 
     @Override
     public List<ErrorEntity> getErrorsByUrl(String url) {
-        return repository.findAllByUrl(url)
-                .orElseThrow(() -> new ErrorNotFoundException("Errors by url " + url + " weren't found"));
+        List<ErrorEntity> result = repository.findAllByUrl(url);
+        if (result.isEmpty()) {
+            throw new ErrorNotFoundException("Errors by url " + url + " weren't found");
+        }
+        return result;
     }
 
     @Override
     public List<ErrorEntity> getErrorsByUrlContains(String url) {
-        return repository.findAllByUrlContains(url)
-                .orElseThrow(() -> new ErrorNotFoundException("Errors by url contains " + url + " weren't found"));
+        List<ErrorEntity> result = repository.findAllByUrlContains(url);
+        if (result.isEmpty()) {
+            throw new ErrorNotFoundException("Errors by url contains " + url + " weren't found");
+        }
+        return result;
     }
 
     @Override

@@ -37,7 +37,7 @@ public class TaskResultServiceTest {
         String id = UUID.randomUUID().toString();
 
         when(repository.findAllByTaskId(id))
-                .thenReturn(Optional.of(Collections.singletonList(new TaskResultEntity())));
+                .thenReturn(Collections.singletonList(new TaskResultEntity()));
 
         service.getAllTaskResultsByTaskId(id);
 
@@ -47,7 +47,7 @@ public class TaskResultServiceTest {
     @Test
     public void testGetAllTaskResultsByTaskIdEntityNotFound() {
         String id = UUID.randomUUID().toString();
-        when(repository.findAllByTaskId(id)).thenReturn(Optional.empty());
+        when(repository.findAllByTaskId(id)).thenReturn(Collections.emptyList());
 
         assertThatThrownBy(() -> service.getAllTaskResultsByTaskId(id))
                 .isInstanceOf(TaskResultsNotFoundException.class)
@@ -78,7 +78,7 @@ public class TaskResultServiceTest {
     @Test
     public void testGetTaskResultByUrl() {
         when(repository.findAllByUrl(url))
-                .thenReturn(Optional.of(Collections.singletonList(new TaskResultEntity())));
+                .thenReturn(Collections.singletonList(new TaskResultEntity()));
 
         service.getTaskResultsByUrl(url);
 
@@ -87,7 +87,7 @@ public class TaskResultServiceTest {
 
     @Test
     public void testTaskResultsByUrlEntityNotFound() {
-        when(repository.findAllByUrl(url)).thenReturn(Optional.empty());
+        when(repository.findAllByUrl(url)).thenReturn(Collections.emptyList());
 
         assertThatThrownBy(() -> service.getTaskResultsByUrl(url))
                 .isInstanceOf(TaskResultsNotFoundException.class)
@@ -97,7 +97,7 @@ public class TaskResultServiceTest {
     @Test
     public void testGetTaskResultByUrlContains() {
         when(repository.findAllByUrlContains(url))
-                .thenReturn(Optional.of(Collections.singletonList(new TaskResultEntity())));
+                .thenReturn(Collections.singletonList(new TaskResultEntity()));
 
         service.getTaskResultsByUrlContains(url);
 
@@ -106,7 +106,7 @@ public class TaskResultServiceTest {
 
     @Test
     public void testTaskResultsByUrlContainsEntityNotFound() {
-        when(repository.findAllByUrlContains(url)).thenReturn(Optional.empty());
+        when(repository.findAllByUrlContains(url)).thenReturn(Collections.emptyList());
 
         assertThatThrownBy(() -> service.getTaskResultsByUrlContains(url))
                 .isInstanceOf(TaskResultsNotFoundException.class)

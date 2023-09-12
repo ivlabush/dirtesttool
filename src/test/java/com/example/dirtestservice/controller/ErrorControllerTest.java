@@ -12,16 +12,16 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.server.LocalServerPort;
+import org.springframework.boot.testcontainers.service.connection.ServiceConnection;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatusCode;
-import org.springframework.test.context.DynamicPropertyRegistry;
-import org.springframework.test.context.DynamicPropertySource;
 import org.springframework.web.client.HttpClientErrorException;
 import org.testcontainers.containers.PostgreSQLContainer;
 import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
 
 import static io.restassured.RestAssured.given;
+import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.hasSize;
 
 
@@ -33,17 +33,11 @@ public class ErrorControllerTest {
     private Integer port;
 
     @Container
+    @ServiceConnection
     static PostgreSQLContainer<?> postgres = new PostgreSQLContainer<>("postgres:15-alpine")
             .withDatabaseName("postgres")
             .withUsername("root")
             .withPassword("toor");
-
-    @DynamicPropertySource
-    static void setProperties(DynamicPropertyRegistry registry) {
-        registry.add("spring.datasource.url", postgres::getJdbcUrl);
-        registry.add("spring.datasource.username", postgres::getUsername);
-        registry.add("spring.datasource.password", postgres::getPassword);
-    }
 
     @Autowired
     private TaskRepository taskRepository;
@@ -89,8 +83,21 @@ public class ErrorControllerTest {
     }
 
     @Test
+    public void testGetErrorsByTaskIdEntityNotFound() {
+        createTaskWithError();
+
+        given()
+                .contentType(ContentType.JSON)
+                .when()
+                .get("/errors/task/123")
+                .then()
+                .statusCode(404)
+                .body("message", equalTo("Errors for task id=123 weren't found"));
+    }
+
+    @Test
     public void testGetErrorsByStatusCode() {
-        TaskEntity entity = createTaskWithError();
+        createTaskWithError();
 
         given()
                 .contentType(ContentType.JSON)
@@ -99,6 +106,19 @@ public class ErrorControllerTest {
                 .then()
                 .statusCode(200)
                 .body(".", hasSize(1));
+    }
+
+    @Test
+    public void testGetErrorsByStatusCodeEntityNotFound() {
+        createTaskWithError();
+
+        given()
+                .contentType(ContentType.JSON)
+                .when()
+                .get("/errors/statuscode/100")
+                .then()
+                .statusCode(404)
+                .body("message", equalTo("Errors by status code 100 weren't found"));
     }
 
     @Test
@@ -116,6 +136,20 @@ public class ErrorControllerTest {
     }
 
     @Test
+    public void testGetErrorsByUrlEntityNotFound() {
+        createTaskWithError();
+
+        given()
+                .contentType(ContentType.JSON)
+                .param("url", "aaa")
+                .when()
+                .get("/errors/url")
+                .then()
+                .statusCode(404)
+                .body("message", equalTo("Errors by url aaa weren't found"));
+    }
+
+    @Test
     public void testGetErrorsByUrlContains() {
         createTaskWithError();
 
@@ -127,6 +161,20 @@ public class ErrorControllerTest {
                 .then()
                 .statusCode(200)
                 .body(".", hasSize(1));
+    }
+
+    @Test
+    public void testGetErrorsByUrlContainsEntityNotFound() {
+        createTaskWithError();
+
+        given()
+                .contentType(ContentType.JSON)
+                .param("url", "aaa")
+                .when()
+                .get("/errors/url/contains")
+                .then()
+                .statusCode(404)
+                .body("message", equalTo("Errors by url contains aaa weren't found"));
     }
 
     private TaskEntity createTaskWithError() {

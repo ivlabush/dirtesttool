@@ -29,8 +29,11 @@ public class TaskResultServiceImpl implements TaskResultService {
 
     @Override
     public List<TaskResultEntity> getAllTaskResultsByTaskId(String id) {
-        return repository.findAllByTaskId(id)
-                .orElseThrow(() -> new TaskResultsNotFoundException("Task Results for taskId " + id + " wasn't found"));
+        List<TaskResultEntity> result = repository.findAllByTaskId(id);
+        if (result.isEmpty()) {
+            throw new TaskResultsNotFoundException("Task Results for taskId " + id + " wasn't found");
+        }
+        return result;
     }
 
     @Override
@@ -41,14 +44,20 @@ public class TaskResultServiceImpl implements TaskResultService {
 
     @Override
     public List<TaskResultEntity> getTaskResultsByUrl(String url) {
-        return repository.findAllByUrl(url)
-                .orElseThrow(() -> new TaskResultsNotFoundException("Task Results by url " + url + " weren't found"));
+        List<TaskResultEntity> result = repository.findAllByUrl(url);
+        if (result.isEmpty()) {
+            throw new TaskResultsNotFoundException("Task Results by url " + url + " weren't found");
+        }
+        return result;
     }
 
     @Override
     public List<TaskResultEntity> getTaskResultsByUrlContains(String url) {
-        return repository.findAllByUrlContains(url)
-                .orElseThrow(() -> new TaskResultsNotFoundException("Task Results by url " + url + " weren't found"));
+        List<TaskResultEntity> result = repository.findAllByUrlContains(url);
+        if (result.isEmpty()) {
+            throw new TaskResultsNotFoundException("Task Results by url " + url + " weren't found");
+        }
+        return result;
     }
 
     @Override

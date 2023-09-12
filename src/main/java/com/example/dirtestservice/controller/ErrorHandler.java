@@ -36,6 +36,16 @@ public class ErrorHandler {
                 .build();
     }
 
+    @ExceptionHandler(value = ErrorNotFoundException.class)
+    @ResponseBody
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    public ErrorResponseDto handleErrorNotFoundNotFoundException(ErrorNotFoundException e) {
+        return ErrorResponseDto.builder()
+                .message(e.getMessage())
+                .date(new Date())
+                .build();
+    }
+
     @ExceptionHandler(value = MethodArgumentNotValidException.class)
     @ResponseBody
     @ResponseStatus(HttpStatus.BAD_REQUEST)

@@ -43,7 +43,7 @@ public class ErrorServiceTest {
         String id = UUID.randomUUID().toString();
 
         when(errorRepository.findAllByTaskId(id))
-                .thenReturn(Optional.of(Collections.singletonList(new ErrorEntity())));
+                .thenReturn(Collections.singletonList(new ErrorEntity()));
 
         service.getErrorsByTaskId(id);
         verify(errorRepository, times(1)).findAllByTaskId(id);
@@ -52,7 +52,7 @@ public class ErrorServiceTest {
     @Test
     public void testGetErrorsByTaskIdEntityNotFound() {
         String id = UUID.randomUUID().toString();
-        when(errorRepository.findAllByTaskId(id)).thenReturn(Optional.empty());
+        when(errorRepository.findAllByTaskId(id)).thenReturn(Collections.emptyList());
 
         assertThatThrownBy(() -> service.getErrorsByTaskId(id))
                 .isInstanceOf(ErrorNotFoundException.class)
@@ -64,7 +64,7 @@ public class ErrorServiceTest {
         Integer id = random.nextInt();
 
         when(errorRepository.findAllByStatusCode(id))
-                .thenReturn(Optional.of(Collections.singletonList(new ErrorEntity())));
+                .thenReturn(Collections.singletonList(new ErrorEntity()));
 
         service.getErrorsByStatusCode(id);
         verify(errorRepository, times(1)).findAllByStatusCode(id);
@@ -74,7 +74,7 @@ public class ErrorServiceTest {
     public void testGetErrorsByStatusCodeEntityNotFound() {
         Integer id = random.nextInt();
 
-        when(errorRepository.findAllByStatusCode(id)).thenReturn(Optional.empty());
+        when(errorRepository.findAllByStatusCode(id)).thenReturn(Collections.emptyList());
 
         assertThatThrownBy(() -> service.getErrorsByStatusCode(id))
                 .isInstanceOf(ErrorNotFoundException.class)
@@ -84,7 +84,7 @@ public class ErrorServiceTest {
     @Test
     public void testGetErrorsByUrl() {
         when(errorRepository.findAllByUrl(url))
-                .thenReturn(Optional.of(Collections.singletonList(new ErrorEntity())));
+                .thenReturn(Collections.singletonList(new ErrorEntity()));
 
         service.getErrorsByUrl(url);
         verify(errorRepository, times(1)).findAllByUrl(url);
@@ -92,7 +92,7 @@ public class ErrorServiceTest {
 
     @Test
     public void testGetErrorsByUrlEntityNotFound() {
-        when(errorRepository.findAllByUrl(url)).thenReturn(Optional.empty());
+        when(errorRepository.findAllByUrl(url)).thenReturn(Collections.emptyList());
 
         assertThatThrownBy(() -> service.getErrorsByUrl(url))
                 .isInstanceOf(ErrorNotFoundException.class)
@@ -102,7 +102,7 @@ public class ErrorServiceTest {
     @Test
     public void testGetErrorsByUrlContains() {
         when(errorRepository.findAllByUrlContains(url))
-                .thenReturn(Optional.of(Collections.singletonList(new ErrorEntity())));
+                .thenReturn(Collections.singletonList(new ErrorEntity()));
 
         service.getErrorsByUrlContains(url);
         verify(errorRepository, times(1)).findAllByUrlContains(url);
@@ -110,7 +110,7 @@ public class ErrorServiceTest {
 
     @Test
     public void testGetErrorsByUrlContainsEntityNotFound() {
-        when(errorRepository.findAllByUrlContains(url)).thenReturn(Optional.empty());
+        when(errorRepository.findAllByUrlContains(url)).thenReturn(Collections.emptyList());
 
         assertThatThrownBy(() -> service.getErrorsByUrlContains(url))
                 .isInstanceOf(ErrorNotFoundException.class)

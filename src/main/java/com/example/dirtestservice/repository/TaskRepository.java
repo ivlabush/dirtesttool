@@ -6,14 +6,13 @@ import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 
 import java.util.List;
-import java.util.Optional;
 
 public interface TaskRepository extends JpaRepository<TaskEntity, String> {
 
-    Optional<List<TaskEntity>> findAllByBaseUrl(String url);
+    List<TaskEntity> findAllByBaseUrl(String url);
 
     @Query("from TaskEntity as e where e.baseUrl like %?1%")
-    Optional<List<TaskEntity>> findTasksByUrlContains(String url);
+    List<TaskEntity> findTasksByUrlContains(String url);
 
     void deleteAllByBaseUrl(String baseUrl);
 

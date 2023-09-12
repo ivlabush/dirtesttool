@@ -36,14 +36,20 @@ public class TaskServiceImpl implements TaskService {
 
     @Override
     public List<TaskEntity> getTaskByUrl(String url) {
-        return repository.findAllByBaseUrl(url)
-                .orElseThrow(() -> new TaskNotFoundException("Tasks by url=" + url + " weren't found"));
+        List<TaskEntity> result = repository.findAllByBaseUrl(url);
+        if (result.isEmpty()) {
+            throw new TaskNotFoundException("Tasks by url=" + url + " weren't found");
+        }
+        return result;
     }
 
     @Override
     public List<TaskEntity> getTasksByUrlContains(String url) {
-        return repository.findTasksByUrlContains(url)
-                .orElseThrow(() -> new TaskNotFoundException("Tasks containing url=" + url + " weren't found"));
+        List<TaskEntity> result = repository.findTasksByUrlContains(url);
+        if (result.isEmpty()) {
+            throw new TaskNotFoundException("Tasks containing url=" + url + " weren't found");
+        }
+        return result;
     }
 
     @Override

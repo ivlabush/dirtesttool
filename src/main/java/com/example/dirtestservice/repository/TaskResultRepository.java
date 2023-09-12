@@ -7,16 +7,15 @@ import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 
 import java.util.List;
-import java.util.Optional;
 
 public interface TaskResultRepository extends JpaRepository<TaskResultEntity, String> {
 
-    Optional<List<TaskResultEntity>> findAllByTaskId(String id);
+    List<TaskResultEntity> findAllByTaskId(String id);
 
-    Optional<List<TaskResultEntity>> findAllByUrl(String url);
+    List<TaskResultEntity> findAllByUrl(String url);
 
     @Query("from TaskResultEntity e where e.url like %?1%")
-    Optional<List<TaskResultEntity>> findAllByUrlContains(String url);
+    List<TaskResultEntity> findAllByUrlContains(String url);
 
     void deleteAllByTask(TaskEntity entity);
 
