@@ -51,7 +51,7 @@ public class TaskControllerTest {
 
     @Test
     public void testGetAllTasks() {
-        createTask();
+        TaskEntity entity = createTask();
 
         given()
                 .contentType(ContentType.JSON)
@@ -59,7 +59,10 @@ public class TaskControllerTest {
                 .get("/tasks")
                 .then()
                 .statusCode(200)
-                .body(".", hasSize(1));
+                .body(".", hasSize(1))
+                .body("[0].id", is(notNullValue()))
+                .body("[0].name", equalTo(entity.getName()))
+                .body("[0].baseUrl", equalTo(url));
     }
 
     @Test
@@ -93,7 +96,7 @@ public class TaskControllerTest {
 
     @Test
     public void testGetTasksByBaseUrl() {
-        createTask();
+        TaskEntity entity = createTask();
 
         given()
                 .contentType(ContentType.JSON)
@@ -102,7 +105,10 @@ public class TaskControllerTest {
                 .get("/tasks/url")
                 .then()
                 .statusCode(200)
-                .body(".", hasSize(1));
+                .body(".", hasSize(1))
+                .body("[0].id", is(notNullValue()))
+                .body("[0].name", equalTo(entity.getName()))
+                .body("[0].baseUrl", equalTo(url));
     }
 
     @Test
@@ -122,7 +128,7 @@ public class TaskControllerTest {
 
     @Test
     public void testGetTasksByBaseUrlContains() {
-        createTask();
+        TaskEntity entity = createTask();
 
         given()
                 .contentType(ContentType.JSON)
@@ -131,7 +137,10 @@ public class TaskControllerTest {
                 .get("/tasks/url/contains")
                 .then()
                 .statusCode(200)
-                .body(".", hasSize(1));
+                .body(".", hasSize(1))
+                .body("[0].id", is(notNullValue()))
+                .body("[0].name", equalTo(entity.getName()))
+                .body("[0].baseUrl", equalTo(url));
     }
 
     @Test

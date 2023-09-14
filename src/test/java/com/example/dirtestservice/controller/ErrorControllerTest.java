@@ -55,9 +55,13 @@ public class ErrorControllerTest {
         taskRepository.deleteAll();
     }
 
+    private final String STACK_TRACE_MESSAGE = "Message1";
+    private final int ERROR_STATUS_CODE = 400;
+    private final String STATUS_TEXT = "Status Text1";
+
     @Test
     public void testGetAllErrors() {
-        createTaskWithError();
+        TaskEntity entity = createTaskWithError();
 
         given()
                 .contentType(ContentType.JSON)
@@ -65,7 +69,12 @@ public class ErrorControllerTest {
                 .get("/errors")
                 .then()
                 .statusCode(200)
-                .body(".", hasSize(1));
+                .body(".", hasSize(1))
+                .body("[0].id", is(notNullValue()))
+                .body("[0].url", equalTo(url + "1"))
+                .body("[0].taskId", equalTo(entity.getId()))
+                .body("[0].statusCode", equalTo(ERROR_STATUS_CODE))
+                .body("[0].message", equalTo(STACK_TRACE_MESSAGE));
     }
 
     @Test
@@ -78,7 +87,12 @@ public class ErrorControllerTest {
                 .get("/errors/task/" + entity.getId())
                 .then()
                 .statusCode(200)
-                .body(".", hasSize(1));
+                .body(".", hasSize(1))
+                .body("[0].id", is(notNullValue()))
+                .body("[0].url", equalTo(url + "1"))
+                .body("[0].taskId", equalTo(entity.getId()))
+                .body("[0].statusCode", equalTo(ERROR_STATUS_CODE))
+                .body("[0].message", equalTo(STACK_TRACE_MESSAGE));
     }
 
     @Test
@@ -97,7 +111,7 @@ public class ErrorControllerTest {
 
     @Test
     public void testGetErrorsByStatusCode() {
-        createTaskWithError();
+        TaskEntity entity = createTaskWithError();
 
         given()
                 .contentType(ContentType.JSON)
@@ -105,7 +119,12 @@ public class ErrorControllerTest {
                 .get("/errors/statuscode/400")
                 .then()
                 .statusCode(200)
-                .body(".", hasSize(1));
+                .body(".", hasSize(1))
+                .body("[0].id", is(notNullValue()))
+                .body("[0].url", equalTo(url + "1"))
+                .body("[0].taskId", equalTo(entity.getId()))
+                .body("[0].statusCode", equalTo(ERROR_STATUS_CODE))
+                .body("[0].message", equalTo(STACK_TRACE_MESSAGE));
     }
 
     @Test
@@ -124,7 +143,7 @@ public class ErrorControllerTest {
 
     @Test
     public void testGetErrorsByUrl() {
-        createTaskWithError();
+        TaskEntity entity = createTaskWithError();
 
         given()
                 .contentType(ContentType.JSON)
@@ -133,7 +152,12 @@ public class ErrorControllerTest {
                 .get("/errors/url")
                 .then()
                 .statusCode(200)
-                .body(".", hasSize(1));
+                .body(".", hasSize(1))
+                .body("[0].id", is(notNullValue()))
+                .body("[0].url", equalTo(url + "1"))
+                .body("[0].taskId", equalTo(entity.getId()))
+                .body("[0].statusCode", equalTo(ERROR_STATUS_CODE))
+                .body("[0].message", equalTo(STACK_TRACE_MESSAGE));
     }
 
     @Test
@@ -153,7 +177,7 @@ public class ErrorControllerTest {
 
     @Test
     public void testGetErrorsByUrlContains() {
-        createTaskWithError();
+        TaskEntity entity = createTaskWithError();
 
         given()
                 .contentType(ContentType.JSON)
@@ -162,7 +186,12 @@ public class ErrorControllerTest {
                 .get("/errors/url/contains")
                 .then()
                 .statusCode(200)
-                .body(".", hasSize(1));
+                .body(".", hasSize(1))
+                .body("[0].id", is(notNullValue()))
+                .body("[0].url", equalTo(url + "1"))
+                .body("[0].taskId", equalTo(entity.getId()))
+                .body("[0].statusCode", equalTo(ERROR_STATUS_CODE))
+                .body("[0].message", equalTo(STACK_TRACE_MESSAGE));
     }
 
     @Test
@@ -201,8 +230,8 @@ public class ErrorControllerTest {
         TaskEntity task = taskService.createTask(dto);
 
         HttpClientErrorException cause = HttpClientErrorException
-                .create("Message1",
-                        HttpStatusCode.valueOf(400), "Status Text1", new HttpHeaders(), new byte[]{}, null);
+                .create(STACK_TRACE_MESSAGE, HttpStatusCode.valueOf(ERROR_STATUS_CODE), STATUS_TEXT, new HttpHeaders(),
+                        new byte[]{}, null);
         StackTraceElement[] stackTrace = new StackTraceElement[]{new StackTraceElement("Class Loader Name", "Module Name", "1",
                 "Declaring Class", "Method Name", "File name", 1)};
         cause.setStackTrace(stackTrace);

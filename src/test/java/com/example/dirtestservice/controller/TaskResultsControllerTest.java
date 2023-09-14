@@ -52,9 +52,11 @@ public class TaskResultsControllerTest {
         taskResultRepository.deleteAll();
     }
 
+    private final int STATUS_CODE = 200;
+
     @Test
     public void testGetAllTaskResults() {
-        createTaskWithTaskResults();
+        TaskResultEntity entity = createTaskWithTaskResults();
 
         given()
                 .contentType(ContentType.JSON)
@@ -62,20 +64,28 @@ public class TaskResultsControllerTest {
                 .get("/taskresults")
                 .then()
                 .statusCode(200)
-                .body(".", hasSize(1));
+                .body(".", hasSize(1))
+                .body("[0].id", is(notNullValue()))
+                .body("[0].url", equalTo(url + "1"))
+                .body("[0].taskId", equalTo(entity.getTask().getId()))
+                .body("[0].status", equalTo(STATUS_CODE));
     }
 
     @Test
     public void testGetAllErrorResultsByTaskId() {
-        TaskResultEntity result = createTaskWithTaskResults();
+        TaskResultEntity entity = createTaskWithTaskResults();
 
         given()
                 .contentType(ContentType.JSON)
                 .when()
-                .get("/taskresults/task/" + result.getTask().getId())
+                .get("/taskresults/task/" + entity.getTask().getId())
                 .then()
                 .statusCode(200)
-                .body(".", hasSize(1));
+                .body(".", hasSize(1))
+                .body("[0].id", is(notNullValue()))
+                .body("[0].url", equalTo(url + "1"))
+                .body("[0].taskId", equalTo(entity.getTask().getId()))
+                .body("[0].status", equalTo(STATUS_CODE));
     }
 
     @Test
@@ -124,7 +134,7 @@ public class TaskResultsControllerTest {
 
     @Test
     public void testGetTaskResultsByUrl() {
-        createTaskWithTaskResults();
+        TaskResultEntity entity = createTaskWithTaskResults();
 
         given()
                 .contentType(ContentType.JSON)
@@ -133,7 +143,11 @@ public class TaskResultsControllerTest {
                 .get("/taskresults/url")
                 .then()
                 .statusCode(200)
-                .body(".", hasSize(1));
+                .body(".", hasSize(1))
+                .body("[0].id", is(notNullValue()))
+                .body("[0].url", equalTo(url + "1"))
+                .body("[0].taskId", equalTo(entity.getTask().getId()))
+                .body("[0].status", equalTo(STATUS_CODE));
     }
 
     @Test
@@ -153,7 +167,7 @@ public class TaskResultsControllerTest {
 
     @Test
     public void testGetTaskResultsByUrlContains() {
-        createTaskWithTaskResults();
+        TaskResultEntity entity = createTaskWithTaskResults();
 
         given()
                 .contentType(ContentType.JSON)
@@ -162,7 +176,11 @@ public class TaskResultsControllerTest {
                 .get("/taskresults/url/contains")
                 .then()
                 .statusCode(200)
-                .body(".", hasSize(1));
+                .body(".", hasSize(1))
+                .body("[0].id", is(notNullValue()))
+                .body("[0].url", equalTo(url + "1"))
+                .body("[0].taskId", equalTo(entity.getTask().getId()))
+                .body("[0].status", equalTo(STATUS_CODE));
     }
 
     @Test
@@ -200,6 +218,6 @@ public class TaskResultsControllerTest {
 
         TaskEntity task = taskService.createTask(dto);
 
-        return taskResultService.createTaskResult(url + "1", task, 200);
+        return taskResultService.createTaskResult(url + "1", task, STATUS_CODE);
     }
 }
