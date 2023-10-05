@@ -3,6 +3,7 @@ package com.example.dirtestservice.controller;
 import com.example.dirtestservice.dto.TaskDto;
 import com.example.dirtestservice.dto.TaskResultDto;
 import com.example.dirtestservice.service.TaskResultService;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.constraints.NotBlank;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
@@ -19,6 +20,7 @@ import java.util.List;
 @RequestMapping("/taskresults")
 @RequiredArgsConstructor(onConstructor = @__(@Autowired))
 @Validated
+@Tag(name = "Task Results Controller", description = "REST API Controller to Operate Task Results")
 public class TaskResultController {
 
     private final TaskResultService service;

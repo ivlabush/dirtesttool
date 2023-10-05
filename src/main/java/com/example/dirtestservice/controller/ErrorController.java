@@ -35,7 +35,7 @@ public class ErrorController {
     private static final Type type = new TypeToken<List<ErrorDto>>() {
     }.getType();
 
-    @Operation(summary = "Provides all errors in the system")
+    @Operation(summary = "Provides all Errors in the system")
     @ApiResponses(value = {
         @ApiResponse(responseCode = "200", description = "All found Errors in the system", content = {
                 @Content(mediaType = "application/json",
@@ -49,7 +49,7 @@ public class ErrorController {
         return mapper.map(service.getAllErrors(), type);
     }
 
-    @Operation(summary = "Provides all errors by Task Id")
+    @Operation(summary = "Provides all Errors by Task Id")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "All found Errors by Task Id", content = {
                     @Content(mediaType = "application/json",
@@ -68,7 +68,7 @@ public class ErrorController {
         return mapper.map(service.getErrorsByTaskId(id), type);
     }
 
-    @Operation(summary = "Provides all errors by Status Code")
+    @Operation(summary = "Provides all Errors by Status Code")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "All found Errors by Status Code", content = {
                     @Content(mediaType = "application/json",
@@ -87,7 +87,7 @@ public class ErrorController {
         return mapper.map(service.getErrorsByStatusCode(code), type);
     }
 
-    @Operation(summary = "Provides all errors by URL")
+    @Operation(summary = "Provides all Errors by URL")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "All found Errors by URL", content = {
                     @Content(mediaType = "application/json",
@@ -106,7 +106,7 @@ public class ErrorController {
         return mapper.map(service.getErrorsByUrl(url), type);
     }
 
-    @Operation(summary = "Provides all errors contains URL part")
+    @Operation(summary = "Provides all Errors contains URL part")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "All found Errors by URL part", content = {
                     @Content(mediaType = "application/json",
@@ -125,7 +125,7 @@ public class ErrorController {
         return mapper.map(service.getErrorsByUrlContains(url), type);
     }
 
-    @Operation(summary = "Delete all errors in the system")
+    @Operation(summary = "Delete all Errors in the system")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "All found Errors in the system has been deleted"),
     })
@@ -135,7 +135,7 @@ public class ErrorController {
         service.deleteAllErrors();
     }
 
-    @Operation(summary = "Delete all errors by Task Id")
+    @Operation(summary = "Delete all Errors by Task Id")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "All found Errors by Task Id has been deleted"),
             @ApiResponse(responseCode = "404", description = "Errors weren't found by by Task Id")
@@ -146,7 +146,7 @@ public class ErrorController {
         service.deleteErrorsByTaskId(id);
     }
 
-    @Operation(summary = "Delete all errors by URL")
+    @Operation(summary = "Delete all Errors by URL")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "All found Errors by URL has been deleted"),
             @ApiResponse(responseCode = "404", description = "Errors weren't found by URL")
@@ -157,7 +157,7 @@ public class ErrorController {
         service.deleteErrorsByUrl(url);
     }
 
-    @Operation(summary = "Delete all errors by URL part")
+    @Operation(summary = "Delete all Errors by URL part")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "All found Errors by URL part has been deleted"),
             @ApiResponse(responseCode = "404", description = "Errors weren't found by URL part")
