@@ -31,7 +31,8 @@ Run ```mvn spring-boot:run``` to run the service. Default service port is 8080
 In order to run tests Docker daemon need to be started
 
 ## REST APIs
-Service expose REST APIs to manipulate configuration and runtime of the task, and obtain tasks results or errors  
+Service expose REST APIs to manipulate configuration and runtime of the task, and obtain tasks results or errors.
+Please find Swagger UI by following URL ```http://localhost:8080/swagger-ui/index.html``` to familiarise yourself with available REST APIs
 
 ### Tasks API
 ```GET /tasks/``` provide all existing tasks in the system  

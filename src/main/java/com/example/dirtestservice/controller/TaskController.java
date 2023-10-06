@@ -168,7 +168,7 @@ public class TaskController {
         service.deleteTask(id);
     }
 
-    @Operation(summary = "Delete all Errors by URL")
+    @Operation(summary = "Delete all Tasks by URL")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "All found Tasks by URL has been deleted")
     })
@@ -180,7 +180,7 @@ public class TaskController {
 
     @Operation(summary = "Delete all Tasks by URL part")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "All found Errors by URL part has been deleted")
+            @ApiResponse(responseCode = "200", description = "All found Tasks by URL part has been deleted")
     })
     @DeleteMapping("/url/contains")
     @ResponseStatus(HttpStatus.OK)
